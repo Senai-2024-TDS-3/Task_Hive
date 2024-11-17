@@ -1,0 +1,97 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    font-family: "Tienne", serif;
+}
+
+html,
+body
+{
+    height: 100vh;
+    width: 100vw;
+    background-color: #DBDBDB;
+    background-image: url('./assets/images/Hex_Back_Black.png');
+    background-size: 100%;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+}
+
+.dark-mode html,
+.dark-mode body 
+{
+    background-color: #1A1A1A;
+    background-image: url('./assets/images/Hex_Back_Yellow.png');
+}
+
+body 
+{
+    transition: background-color 0.3s, background-image 0.3s;
+}
+
+button
+{
+    cursor: pointer;
+    background-color: #000000;
+    color: #DBDBDB;
+    border: none;
+    padding: 1.5%;
+    width: 78%;
+}
+
+button:hover
+{
+    background-color: #CF7500;
+    color: #000000;
+}
+
+.navbar,
+.header
+{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    color: black;
+    background-color: #F0A500;
+}
+
+.navbar h1 
+{
+    margin: 0;
+}
+
+.navbar ul 
+{
+    list-style: none;
+    display: flex;
+    margin: 0;
+    padding: 0;
+}
+
+.navbar ul li 
+{
+    margin-right: 20px;
+}
+
+.navbar ul li a 
+{
+    color: black;
+    text-decoration: none;
+}
+
+.navbar ul li a:hover 
+{
+    text-decoration: underline;
+}
+
+.active-link 
+{
+    font-weight: bold;
+    text-decoration: underline;
+}
+
+img
+{
+    width: 5%;
+}

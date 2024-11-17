@@ -1,0 +1,30 @@
+import { NavLink } from "react-router-dom";
+import Logo from "../assets/images/TaskHive_Black.png";
+import Dark_Mode from "./Dark_Mode";
+
+export default function User_Navbar() {
+    return (
+        <nav className="navbar">
+            <img src={Logo} alt="Logo" />
+            <h1>Task Hive</h1>
+            <ul>
+                <li>
+                    <NavLink to="/user-cadastrar-task" className={({ isActive }) => (isActive ? "active-link" : "")}>
+                        Cadastrar Tarefa
+                    </NavLink>
+                </li>
+                <li>
+                    <NavLink to="/user-gerenciar-task" className={({ isActive }) => (isActive ? "active-link" : "")}>
+                        Gerenciar Tarefa
+                    </NavLink>
+                </li>
+                <li>
+                    <NavLink to="/user-gerenciar-task" className={({ isActive }) => (isActive ? "active-link" : "")}>
+                        Gerenciar Usuário
+                    </NavLink>
+                </li>
+            </ul>
+            <Dark_Mode />
+        </nav>
+    );
+};
