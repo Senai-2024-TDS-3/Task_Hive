@@ -18,11 +18,11 @@ app.get('/params/:id', (req, res) =>{
 
 // Post para cadastrar novos usuários no banco de dados
 app.post('/cadastro', (req, res) => {
-    const {nome, email, senha, pontos, nivel, data_criacao, tipo} = req.body
+    const {nome, email, senha, data_criacao, tipo} = req.body
     console.log('O frontend requisitou uma rota api')
     db.query(
-        `INSERT INTO users (nome, email, senha, pontos, nivel, data_criacao, tipo) VALUES (?,?,?,?,?,?,?)`,
-        [nome, email, senha, Number(pontos), nivel, data_criacao, tipo],
+        `INSERT INTO users (nome, email, senha, data_criacao, tipo) VALUES (?,?,?,?,?)`,
+        [nome, email, senha, data_criacao, tipo],
         function (err, results, fields) {
             if (err) {
                 console.error('Erro na inserção', err)
@@ -37,11 +37,11 @@ app.post('/cadastro', (req, res) => {
 
 // Post para registrar novas tarefas
 app.post('/registrotarefa', (req, res) => {
-    const {titulo, descricao, resposta_correta, nivel_minimo, data_criacao} = req.body
+    const {titulo, descricao, data_criacao} = req.body
     console.log('O frontend requisitou uma rota api')
     db.query(
-        `INSERT INTO users (titulo, descricao, resposta_correta, nivel_minimo, data_criacao) VALUES (?,?,?,?,?)`,
-        [titulo, descricao, resposta_correta, nivel_minimo, data_criacao],
+        `INSERT INTO tasks (titulo, descricao, data_criacao) VALUES (?,?,?)`,
+        [titulo, descricao, data_criacao],
         function (err, results, fields) {
             if (err) {
                 console.error('Erro na inserção', err)
@@ -54,28 +54,24 @@ app.post('/registrotarefa', (req, res) => {
     res.send(`Tarefa registrada com sucesso!\nTítulo: ${titulo}\nDescrição: ${descricao}\nData de criação: ${data_criacao}`)
 })
 
-// Tabela responses
-app.post('/registroresposta', (req, res) => {
-    const {resposta, status, data_envio} = req.body
-    console.log('O frontend requisitou uma rota api')
-    db.query(
-        `INSERT INTO responses (resposta, status, data_envio) VALUES (?,?,?)`,
-        [resposta, status, data_envio],
-        function (err, results, fields) {
-            if (err) {
-                console.error('Erro na inserção', err)
-                return
-            }
-            console.log(results)
-            console.log(fields)
-        }
-    )
-    res.send(`Resposta cadastrada com sucesso!\nResposta: ${resposta}\nStatus: ${status}\nData de envio: ${data_envio}`)
-})
-
-
-
-
+// Tabela responses (deixei tudo comentado por enquanto)
+// app.post('/registroresposta', (req, res) => {
+//     const {resposta, status, data_envio} = req.body
+//     console.log('O frontend requisitou uma rota api')
+//     db.query(
+//         `INSERT INTO responses (resposta, status, data_envio) VALUES (?,?,?)`,
+//         [resposta, status, data_envio],
+//         function (err, results, fields) {
+//             if (err) {
+//                 console.error('Erro na inserção', err)
+//                 return
+//             }
+//             console.log(results)
+//             console.log(fields)
+//         }
+//     )
+//     res.send(`Resposta cadastrada com sucesso!\nResposta: ${resposta}\nStatus: ${status}\nData de envio: ${data_envio}`)
+// })
 
 
 // Atualizar tabela
