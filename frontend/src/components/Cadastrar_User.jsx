@@ -5,6 +5,7 @@ export default function Cadastrar_User() {
         <>
             <User_Navbar />
             <h1>Cadastrar_User</h1>
+            
         </>
     )
 }
