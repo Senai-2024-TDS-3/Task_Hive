@@ -6,7 +6,6 @@ export default function User_Navbar() {
     return (
         <nav className="navbar">
             <img src={Logo} alt="Logo" />
-            <h1>Task Hive</h1>
             <ul>
                 <li>
                     <NavLink to="/user-cadastrar-task" className={({ isActive }) => (isActive ? "active-link" : "")}>
