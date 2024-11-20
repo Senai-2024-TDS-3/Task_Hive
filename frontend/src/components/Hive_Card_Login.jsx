@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import './Hive_Card_Login.css';
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import CryptoJS from 'crypto-js';
 
@@ -7,6 +7,7 @@ export default function Hive_Card_Login() {
     const [email, setEmail] = useState('');
     const [senha, setSenha] = useState('');
     const [error, setError] = useState('');
+    const navigate = useNavigate();
 
     // Função para lidar com a alteração do email
     const handleEmailChange = (e) => {
@@ -29,13 +30,17 @@ export default function Hive_Card_Login() {
             // Enviar as credenciais para o backend
             const response = await axios.post('http://localhost:3001/login', {
                 email,
-                senha: senhaCriptografada
+                senha: senhaCriptografada,
             });
 
-            // Se o login for bem-sucedido
-            console.log(response.data);
-            // Pode redirecionar ou fazer outra ação aqui
+            const { redirect } = response.data;
 
+            // Redireciona com base no tipo de usuário
+            if (redirect === 'Admin_Start') {
+                navigate('/admin_start'); // Redireciona para a tela do Admin
+            } else {
+                navigate('/user_start'); // Redireciona para a tela do Usuário
+            }
         } catch (err) {
             setError('Erro ao fazer login. Tente novamente.');
             console.error(err);
@@ -46,22 +51,24 @@ export default function Hive_Card_Login() {
         <div className="hex-grid">
             <div className="hex">
                 <label htmlFor="hex-1">Email:</label>
-                <input 
-                    type="text" 
-                    value={email} 
-                    onChange={handleEmailChange} 
-                    placeholder="Digite seu email" 
+                <input
+                    type="text"
+                    value={email}
+                    onChange={handleEmailChange}
+                    placeholder="Digite seu email"
                 />
                 <label htmlFor="hex-2">Senha:</label>
-                <input 
-                    type="password" 
-                    value={senha} 
-                    onChange={handleSenhaChange} 
-                    placeholder="Digite sua senha" 
+                <input
+                    type="password"
+                    value={senha}
+                    onChange={handleSenhaChange}
+                    placeholder="Digite sua senha"
                 />
                 <br />
-                <button type="submit" onClick={handleLogin}>Entrar</button>
-                {error && <p style={{color: 'red'}}>{error}</p>}
+                <button type="submit" onClick={handleLogin}>
+                    Entrar
+                </button>
+                {error && <p style={{ color: 'red' }}>{error}</p>}
                 <br />
                 <div className="hex_links">
                     <p>Esqueci minha senha</p>

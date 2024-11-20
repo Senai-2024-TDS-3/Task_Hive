@@ -94,16 +94,16 @@ button:hover
 img
 {
     width: 5%;
-<<<<<<< HEAD
+
 }
 
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-=======
-    margin-right: 78%;
-}
+
+/* margin-right: 78%; */
+
 
 .form-container 
 {
@@ -162,4 +162,8 @@ img
   }
 
  
->>>>>>> 3df59ec3ffc3a3b18e1ab379b567c85705b2e6c5
+/* >>>>>>> 3df59ec3ffc3a3b18e1ab379b567c85705b2e6c5 */
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
