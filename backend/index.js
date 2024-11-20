@@ -1,206 +1,147 @@
-const express = require('express')
-const cors = require('cors')
-const db = require('./db')
-const app = express()
-app.use(express.json())
-const port = 3000
+const express = require('express');
+const cors = require('cors');
+const db = require('./db');
+const app = express();
 
-// npm i cors
-app.use(cors({
-    origin: '*'
-}))
+app.use(express.json());
+app.use(cors({ origin: '*' }));
 
-app.get('/params/:id', (req, res) =>{
-    const { id } = req.params
-
-    res.send(id)
-})
-
-// Post para cadastrar novos usuários no banco de dados
-app.post('/cadastro', (req, res) => {
-    const {nome, email, senha, data_criacao, tipo} = req.body
-    console.log('O frontend requisitou uma rota api')
-    db.query(
-        `INSERT INTO users (nome, email, senha, data_criacao, tipo) VALUES (?,?,?,?,?)`,
-        [nome, email, senha, data_criacao, tipo],
-        function (err, results, fields) {
-            if (err) {
-                console.error('Erro na inserção', err)
-                return
-            }
-            console.log(results)
-            console.log(fields)
-        }
-    )
-    res.send(`Usuário cadastrado com sucesso!\nNome: ${nome}\nEmail: ${email}\nData de criação: ${data_criacao}`)
-})
-
-// Post para registrar novas tarefas
-app.post('/registrotarefa', (req, res) => {
-    const {titulo, descricao, data_criacao} = req.body
-    console.log('O frontend requisitou uma rota api')
-    db.query(
-        `INSERT INTO tasks (titulo, descricao, data_criacao) VALUES (?,?,?)`,
-        [titulo, descricao, data_criacao],
-        function (err, results, fields) {
-            if (err) {
-                console.error('Erro na inserção', err)
-                return
-            }
-            console.log(results)
-            console.log(fields)
-        }
-    )
-    res.send(`Tarefa registrada com sucesso!\nTítulo: ${titulo}\nDescrição: ${descricao}\nData de criação: ${data_criacao}`)
-})
-
-// Tabela responses (deixei tudo comentado por enquanto)
-// app.post('/registroresposta', (req, res) => {
-//     const {resposta, status, data_envio} = req.body
-//     console.log('O frontend requisitou uma rota api')
-//     db.query(
-//         `INSERT INTO responses (resposta, status, data_envio) VALUES (?,?,?)`,
-//         [resposta, status, data_envio],
-//         function (err, results, fields) {
-//             if (err) {
-//                 console.error('Erro na inserção', err)
-//                 return
-//             }
-//             console.log(results)
-//             console.log(fields)
-//         }
-//     )
-//     res.send(`Resposta cadastrada com sucesso!\nResposta: ${resposta}\nStatus: ${status}\nData de envio: ${data_envio}`)
-// })
-
-
-// Atualizar tabela
-app.put('/atualizar/:id', (req, res) =>{
-    const {id} = req.params
-    const{marca, modelo, ano, proprietario, cor} = req.body
-    console.log('Veiculo atualizado com sucesso!')
- 
-    db.query(
-        `UPDATE veiculos set marca = ?, modelo = ?, ano = ?, cor = ?, proprietario = ? WHERE id = ?`,
-        [marca, modelo, Number(ano), cor, proprietario, id],
-        function (err, results, fields){
-            if (err) {
-                console.error('Erro na atualização:', err)
-                return
-            }
-            console.log(results)
-            console.log(results)
-        }
-    )
-
-})
-
-// Deletar veículo por id
-app.delete('/deletarid/:id', (req, res) => {
-    const id  = req.params.id;
-  
-    db.query(
-        `DELETE FROM veiculos WHERE id = ?`,
-        [id],
-
-        function (err, results, fidels) {
-            if (err) {
-                console.error('Erro na consulta', err)
-                return res.status(500).json({error : 'Erro ao deletar veículo(s)'})
-            }
-            return res.json(results);
-        }
-    )
-    
-    });
-    
-// Deletar veículo por modelo
-app.delete('/deletarmodelo/:modelo', (req, res) => {
-    const modelo = req.params.modelo.toLowerCase();
-    
-    db.query(
-        `DELETE FROM veiculos WHERE modelo = ? `,
-        [modelo],
-        function (err, results, fidels) {
-        if (err) {
-            console.error('Erro na consulta', err)
-            return res.status(500).json({error : 'Erro ao deletar veículo(s)'})
-        }
-        return res.json(results);
-    }
-)
-
-});
-
-// Selecionar todos os veículos
-app.get('/selecionartodos', (req, res) => {
-    db.query(
-        `SELECT * FROM veiculos`,
-        function (err, results, fields) {
-            if (err) {
-                console.error('Erro na consulta', err)
-                return res.status(500).json({ error: 'Erro ao consultar veículos'})
-            }
-            return res.json(results);
-        }
-    )
-   
-})
-
-// Selecionar veículos por id
-app.get('/selecionarporid/:id', (req, res) => {
-    const id = req.params.id;
-    
-    db.query(
-        `SELECT * FROM veiculos WHERE id = ?`,
-        [id],
-        function (err, results, fidels) {
-            if (err) {
-                console.error('Erro na consulta', err)
-                return res.status(500).json({error : 'Erro ao consultar veículos'})
-            }
-            return res.json(results);
-        }
-    )
-  
-});
-
-// Selecionar veículos por ano
-app.get('/selecionarano/:ano', (req, res) => {
-    const ano = parseInt(req.params.ano);
-
-    db.query(
-        `SELECT * FROM veiculos WHERE ano = ?`,
-        [ano],
-        function (err, results, fidels) {
-            if (err) {
-                console.error('Erro na consulta', err)
-                return res.status(500).json({error : 'Erro ao consultar veículos'})
-            }
-            return res.json(results);
-        }
-    )
-  
-})
-
-// Selecionar veículos por cor azul
-app.get('/selecionarcor/:cor', (req, res) => {
-    const cor = req.params.cor.toLowerCase();
-    
-    db.query(
-        `SELECT * FROM veiculos WHERE cor = 'Azul'`,
-        [cor],
-        function (err, results, fidels) {
-            if (err) {
-                console.error('Erro na consulta', err)
-                return res.status(500).json({error : 'Erro ao consultar veículos'})
-            }
-            return res.json(results);
-        }
-    )
-  
-})
+// COM A PORTA 3000 NÃO ESTAVA FUNCIONANDO
+const port = 3001;
 
 app.listen(port, () => {
-    console.log(`Example app listening on port ${port}`)
-})
+    console.log(`Servidor rodando em http://localhost:${port}`);
+});
+
+
+// PRECISA TESTAR TODOS OS PATHS COM O POSTMAN (AQUI DEU ERRO, MAS ENVIOU PARA O BANCO DE DADOS)
+
+// POST ADMIN
+app.post('/cadastrar_admin', async (req, res) => {
+    const { nome, sobrenome, email, senha, organizacao } = req.body;
+    try {
+        await db.query(
+            `INSERT INTO usuarios (nome, sobrenome, email, senha, organizacao, tipo) VALUES (?, ?, ?, ?, ?, 'admin')`,
+            [nome, sobrenome, email, senha, organizacao]
+        );
+        res.status(201).send('Admin criado com sucesso!');
+    } catch (err) {
+        res.status(500).send('Erro ao criar admin: ' + err.message);
+    }
+});
+
+// GET ALL ADMINS
+app.get('/visualizar_admins', async (req, res) => {
+    try {
+        const [admins] = await db.query(`SELECT * FROM usuarios WHERE tipo = 'admin'`);
+        res.status(200).json(admins);
+    } catch (err) {
+        res.status(500).send('Erro ao buscar admins: ' + err.message);
+    }
+});
+
+// DELETE ADMIN
+app.delete('/deletar_admin/:id', async (req, res) => {
+    const { id } = req.params;
+    try {
+        await db.query(`DELETE FROM usuarios WHERE id = ? AND tipo = 'admin'`, [id]);
+        res.status(200).send('Admin deletado com sucesso!');
+    } catch (err) {
+        res.status(500).send('Erro ao deletar admin: ' + err.message);
+    }
+});
+
+// GET ALL TASKS
+app.get('/visualizar_all_tasks', async (req, res) => {
+    try {
+        const [tarefas] = await db.query(`SELECT * FROM tarefas`);
+        res.status(200).json(tarefas);
+    } catch (err) {
+        res.status(500).send('Erro ao buscar tarefas: ' + err.message);
+    }
+});
+
+// PUT TASK
+app.put('/update_task/:id', async (req, res) => {
+    const { id } = req.params;
+    const { titulo, descricao, status, prazo } = req.body;
+    try {
+        await db.query(
+            `UPDATE tarefas SET titulo = ?, descricao = ?, status = ?, prazo = ? WHERE id = ?`,
+            [titulo, descricao, status, prazo, id]
+        );
+        res.status(200).send('Tarefa atualizada com sucesso!');
+    } catch (err) {
+        res.status(500).send('Erro ao atualizar tarefa: ' + err.message);
+    }
+});
+
+// POST USER
+app.post('/cadastrar_user', async (req, res) => {
+    const { nome, sobrenome, email, senha, organizacao } = req.body;
+    try {
+        await db.query(
+            `INSERT INTO usuarios (nome, sobrenome, email, senha, organizacao, tipo) VALUES (?, ?, ?, ?, ?, 'usuario')`,
+            [nome, sobrenome, email, senha, organizacao]
+        );
+        res.status(201).send('Usuário criado com sucesso!');
+    } catch (err) {
+        res.status(500).send('Erro ao criar usuário: ' + err.message);
+    }
+});
+
+// GET USER
+app.get('/visualizar_user/:id', async (req, res) => {
+    const { id } = req.params;
+    try {
+        const [usuario] = await db.query(`SELECT * FROM usuarios WHERE id = ? AND tipo = 'usuario'`, [id]);
+        res.status(200).json(usuario);
+    } catch (err) {
+        res.status(500).send('Erro ao buscar usuário: ' + err.message);
+    }
+});
+
+// GET USER TASKS
+app.get('/visualizar_user/:id/tasks', async (req, res) => {
+    const { id } = req.params;
+    try {
+        const [tarefas] = await db.query(`SELECT * FROM tarefas WHERE id_usuario = ?`, [id]);
+        res.status(200).json(tarefas);
+    } catch (err) {
+        res.status(500).send('Erro ao buscar tarefas do usuário: ' + err.message);
+    }
+});
+
+// PUT USER TASK
+app.put('/update_user/:id/tasks/:idTask', async (req, res) => {
+    const { id, idTask } = req.params;
+    const { titulo, descricao, status, prazo } = req.body;
+    try {
+        await db.query(
+            `UPDATE tarefas SET titulo = ?, descricao = ?, status = ?, prazo = ? WHERE id = ? AND id_usuario = ?`,
+            [titulo, descricao, status, prazo, idTask, id]
+        );
+        res.status(200).send('Tarefa atualizada com sucesso!');
+    } catch (err) {
+        res.status(500).send('Erro ao atualizar tarefa: ' + err.message);
+    }
+});
+
+// DELETE USER TASK
+app.delete('/delete_user/:id/tasks/:idTask', async (req, res) => {
+    const { id, idTask } = req.params;
+    try {
+        const [result] = await db.query(
+            `DELETE FROM tarefas WHERE id = ? AND id_usuario = ?`,
+            [idTask, id]
+        );
+
+        if (result.affectedRows === 0) {
+            return res.status(404).send('Tarefa não encontrada ou não pertence a este usuário.');
+        }
+
+        res.status(200).send('Tarefa deletada com sucesso!');
+    } catch (err) {
+        res.status(500).send('Erro ao deletar tarefa: ' + err.message);
+    }
+});

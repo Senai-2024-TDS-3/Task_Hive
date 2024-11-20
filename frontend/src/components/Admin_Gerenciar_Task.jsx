@@ -6,7 +6,7 @@ export default function Admin_Gerenciar_Task() {
             <Admin_Navbar />
             <div className="form-container">
                 <form>
-                    <p>"Nome do Usuario "</p>
+                    <p>Nome do Usuário</p>
                     {/* puxar nome do Usuario  */}
                     <div className="form-row">
                         <label>

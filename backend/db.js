@@ -4,7 +4,7 @@ const connection = mysql.createConnection({
     host: 'localhost',
     user: 'root',
     password: 'root',
-    database: 'task_hive',
+    database: 'TaskHive_DB',
 });
 
 connection.connect(err => {
