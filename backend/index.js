@@ -1,6 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const db = require('./db');
+const CryptoJS = require('crypto-js');
 const app = express();
 
 app.use(express.json());
@@ -15,6 +16,55 @@ app.listen(port, () => {
 
 
 // PRECISA TESTAR TODOS OS PATHS COM O POSTMAN (AQUI DEU ERRO, MAS ENVIOU PARA O BANCO DE DADOS)
+
+// POST LOGIN
+app.post('/login', async (req, res) => {
+    const { email, senha } = req.body;
+
+    try {
+        // Buscar usuário no banco de dados
+        const [usuarios] = await db.query('SELECT * FROM usuarios WHERE email = ?', [email]);
+
+        if (usuarios.length === 0) {
+            return res.status(401).send('Usuário não encontrado!');
+        }
+
+        // Descriptografando a senha armazenada no banco (com AES)
+        const usuario = usuarios[0];
+        const bytes  = CryptoJS.AES.decrypt(usuario.senha, 'chaveSecreta');
+        const senhaDescriptografada = bytes.toString(CryptoJS.enc.Utf8);
+
+        // Comparando a senha criptografada enviada com a senha descriptografada
+        if (senhaDescriptografada !== senha) {
+            return res.status(401).send('Senha incorreta!');
+        }
+
+        // Login bem-sucedido
+        res.status(200).send('Login bem-sucedido!');
+
+    } catch (err) {
+        console.error(err);
+        res.status(500).send('Erro ao fazer login');
+    }
+});
+
+// POST USER
+app.post('/cadastrar_user', async (req, res) => {
+    const { nome, sobrenome, email, senha, organizacao } = req.body;
+
+    try {
+        // Criptografia da senha
+        const senhaCriptografada = CryptoJS.AES.encrypt(senha, 'chaveSecreta').toString();
+
+        await db.query(
+            `INSERT INTO usuarios (nome, sobrenome, email, senha, organizacao, tipo) VALUES (?, ?, ?, ?, ?, 'usuario')`,
+            [nome, sobrenome, email, senhaCriptografada, organizacao]
+        );
+        res.status(201).send('Usuário criado com sucesso!');
+    } catch (err) {
+        res.status(500).send('Erro ao criar usuário: ' + err.message);
+    }
+});
 
 // POST ADMIN
 app.post('/cadastrar_admin', async (req, res) => {
