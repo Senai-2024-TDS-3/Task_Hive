@@ -1,80 +1,114 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
-import CryptoJS from 'crypto-js';
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import CryptoJS from "crypto-js";
+import "./Hive_Card_Login.css";
 
 export default function Hive_Card_Login() {
-    const [email, setEmail] = useState('');
-    const [senha, setSenha] = useState('');
-    const [error, setError] = useState('');
-    const navigate = useNavigate();
+  const [email, setEmail] = useState("");
+  const [senha, setSenha] = useState("");
+  const [error, setError] = useState("");
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [forgotEmail, setForgotEmail] = useState("");
+  const [message, setMessage] = useState("");
 
-    // Função para lidar com a alteração do email
-    const handleEmailChange = (e) => {
-        setEmail(e.target.value);
-    };
+  const navigate = useNavigate();
 
-    // Função para lidar com a alteração da senha
-    const handleSenhaChange = (e) => {
-        setSenha(e.target.value);
-    };
+  const handleEmailChange = (e) => setEmail(e.target.value);
+  const handleSenhaChange = (e) => setSenha(e.target.value);
+  const handleForgotEmailChange = (e) => setForgotEmail(e.target.value);
 
-    // Função para enviar o login para o backend
-    const handleLogin = async (e) => {
-        e.preventDefault();
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    try {
+      const senhaCriptografada = CryptoJS.AES.encrypt(
+        senha,
+        "chaveSecreta"
+      ).toString();
+      const response = await axios.post("http://localhost:3001/login", {
+        email,
+        senha: senhaCriptografada,
+      });
 
-        try {
-            // Criptografando a senha antes de enviar
-            const senhaCriptografada = CryptoJS.AES.encrypt(senha, 'chaveSecreta').toString();
+      const { redirect } = response.data;
+      if (redirect === "Admin_Start") navigate("/admin_start");
+      else navigate("/user_start");
+    } catch (err) {
+      setError("Erro ao fazer login. Tente novamente.");
+    }
+  };
 
-            // Enviar as credenciais para o backend
-            const response = await axios.post('http://localhost:3001/login', {
-                email,
-                senha: senhaCriptografada,
-            });
+  const handleForgotPassword = async () => {
+    try {
+      const response = await axios.post(
+        "http://localhost:3001/esqueci-minha-senha",
+        { email: forgotEmail }
+      );
+      setMessage("Instruções enviadas para o e-mail.");
+    } catch (err) {
+      setMessage("Erro ao enviar e-mail. Tente novamente.");
+    }
+  };
 
-            const { redirect } = response.data;
-
-            // Redireciona com base no tipo de usuário
-            if (redirect === 'Admin_Start') {
-                navigate('/admin_start'); // Redireciona para a tela do Admin
-            } else {
-                navigate('/user_start'); // Redireciona para a tela do Usuário
-            }
-        } catch (err) {
-            setError('Erro ao fazer login. Tente novamente.');
-            console.error(err);
-        }
-    };
-
-    return (
-        <div className="hex-grid">
-            <div className="hex">
-                <label htmlFor="hex-1">Email:</label>
-                <input
-                    type="text"
-                    value={email}
-                    onChange={handleEmailChange}
-                    placeholder="Digite seu email"
-                />
-                <label htmlFor="hex-2">Senha:</label>
-                <input
-                    type="password"
-                    value={senha}
-                    onChange={handleSenhaChange}
-                    placeholder="Digite sua senha"
-                />
-                <br />
-                <button type="submit" onClick={handleLogin}>
-                    Entrar
-                </button>
-                {error && <p style={{ color: 'red' }}>{error}</p>}
-                <br />
-                <div className="hex_links">
-                    <p>Esqueci minha senha</p>
-                    <p>Cadastrar</p>
-                </div>
-            </div>
+  return (
+    <div className="hex-grid">
+      <div className="hex">
+        <label htmlFor="hex-1">Email:</label>
+        <input
+          type="text"
+          value={email}
+          onChange={handleEmailChange}
+          placeholder="Digite seu email"
+        />
+        <label htmlFor="hex-2">Senha:</label>
+        <input
+          type="password"
+          value={senha}
+          onChange={handleSenhaChange}
+          placeholder="Digite sua senha"
+        />
+        <br />
+        <button type="submit" onClick={handleLogin}>
+          Entrar
+        </button>
+        {error && <p style={{ color: "red" }}>{error}</p>}
+        <br />
+        <div className="hex_links">
+          <p onClick={() => setIsModalOpen(true)}>Esqueci minha senha</p>
+          <p>Cadastrar</p>
         </div>
-    );
+      </div>
+
+    {/* Modal esqueci a senha */}
+      {isModalOpen && (
+        <div className="fixed inset-0 bg-opacity-50 flex justify-center items-center">
+          <div className="bg-[#F0A500] p-6 rounded shadow-lg w-96">
+            <h2 className="text-lg font-bold mb-4">Esqueci minha senha</h2>
+            <input
+              type="email"
+              placeholder="Digite seu email"
+              value={forgotEmail}
+              onChange={handleForgotEmailChange}
+              className="w-full p-2 border rounded mb-4"
+            />
+            <button
+              onClick={handleForgotPassword}
+              className="bg-black text-white text-weigt font-bold py-2 rounded-none hover:bg-[#CF7500] transition px-4 ml-8"
+            >
+              Enviar
+            </button>
+            <br />
+            <br />
+            <button
+              onClick={() => setIsModalOpen(false)}
+              className="bg-black text-white text-weigt font-bold py-2 rounded-none hover:bg-[#CF7500] transition px-4 ml-8"
+            >
+              Cancelar
+            </button>
+            {message && <p className="text-center mt-4">{message}</p>}
+          </div>
+        </div>
+      )}
+    </div>
+  );
 }

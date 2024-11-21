@@ -1,7 +1,7 @@
 import './User_Navbar'
 
 export default function FormCard() {
-    // Cadastrar Tarefa 
+    // POST Cadastrar tarefa
     // const [formData, setFormData] = useState({
     //     id_usuario: '', // ID do usuário relacionado à tarefa
     //     titulo: '',
@@ -35,7 +35,7 @@ export default function FormCard() {
     // };
 
 
-    // Atualizar Tarefa
+    // PUT atualizar tarefa
 
     // const [formData, setFormData] = useState({
     //     id_usuario: '',
@@ -98,7 +98,7 @@ export default function FormCard() {
 
 
     
-    // Deletar Tarefa
+    // DELETE Deletar Tarefa
 
     // const [tarefaId, setTarefaId] = useState('');
 

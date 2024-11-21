@@ -1,6 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const db = require('./db');
+const nodemailer = require("nodemailer");
 const CryptoJS = require('crypto-js');
 const app = express();
 
@@ -13,6 +14,43 @@ const port = 3001;
 app.listen(port, () => {
     console.log(`Servidor rodando em http://localhost:${port}`);
 });
+
+// CONFIGURAÇÃO DO NODEMAILER
+const transporter = nodemailer.createTransport({
+    service: "gmail",
+    auth: {
+      user: "seu-email@gmail.com", // Substitua pelo seu email
+      pass: "sua-senha", // Substitua pela sua senha (use app password se necessário)
+    },
+  });
+  
+  // ROTA PARA ESQUECI MINHA SENHA
+  app.post("/esqueci-minha-senha", async (req, res) => {
+    const { email } = req.body;
+  
+    try {
+      const [usuarios] = await db.query("SELECT * FROM usuarios WHERE email = ?", [email]);
+  
+      if (usuarios.length === 0) {
+        return res.status(404).send("Usuário não encontrado!");
+      }
+  
+      const token = CryptoJS.AES.encrypt(email, "chaveSecreta").toString();
+      const resetLink = `http://localhost:3000/redefinir-senha?token=${encodeURIComponent(token)}`;
+  
+      await transporter.sendMail({
+        from: "seu-email@gmail.com",
+        to: email,
+        subject: "Redefinição de senha",
+        html: `<p>Clique no link para redefinir sua senha: <a href="${resetLink}">${resetLink}</a></p>`,
+      });
+  
+      res.status(200).send("E-mail enviado com sucesso!");
+    } catch (err) {
+      console.error(err);
+      res.status(500).send("Erro ao enviar e-mail.");
+    }
+  });
 
 
 // PRECISA TESTAR TODOS OS PATHS COM O POSTMAN (AQUI DEU ERRO, MAS ENVIOU PARA O BANCO DE DADOS)
