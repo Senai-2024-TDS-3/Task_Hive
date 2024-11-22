@@ -168,7 +168,7 @@ textarea
 	align-self: center;
 	justify-content: center;
 	padding: 2%;
-	margin-left: 6% ;
+	margin-left: 6%;
 }
 
 .layout_left
@@ -184,17 +184,47 @@ textarea
 	display: flex;
 	flex-wrap: wrap;
 	width: 98%;
-	margin-left: 7.3%;
-	margin-top: -4.1%;
+	margin-left: 4.75%;
+	margin-top: -2.9%;
 }
 
 .hex_teste
 {
 	display: flex;
 	flex-direction: column;
+	flex-wrap: wrap;
+	align-items: center;
+	align-content: center;
+	justify-content: center;
 	width: 200px;
 	height: 200px;
 	background-color: #F0A500;
+	color: black;
 	clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
 	margin: 0.5%;
+}
+
+.hex_wrapper
+{
+	flex-direction: column;
+	flex-wrap: wrap;
+	align-items: center;
+	align-content: center;
+	justify-content: center;
+	width: 205px;
+	height: 208px;
+	background-color: black;
+	clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+	margin: 0.5%;
+	padding: 0.05%;
+}
+
+.hex_teste:hover
+{
+	background-color: #cf7500;
+}
+
+.hex_teste:active
+{
+	background-color: #8d5000;
 }
