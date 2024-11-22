@@ -87,41 +87,60 @@ app.post('/login', async (req, res) => {
 });
 
 // POST USER
-app.post('/cadastrar_user', async (req, res) => {
+app.post('/cadastrar_user', (req, res) => {
     const { nome, sobrenome, email, senha, organizacao } = req.body;
 
     try {
         // Criptografia da senha
         const senhaCriptografada = CryptoJS.AES.encrypt(senha, 'chaveSecreta').toString();
-
-        await db.query(
+            console.log(nome,sobrenome,email,senha,organizacao)
+        db.query(
             `INSERT INTO usuarios (nome, sobrenome, email, senha, organizacao, tipo) VALUES (?, ?, ?, ?, ?, 'usuario')`,
-            [nome, sobrenome, email, senhaCriptografada, organizacao]
+            [nome, sobrenome, email, senhaCriptografada, organizacao],
+            function (err, results, fields) {
+                if (err) {
+                    console.error('Erro na inserção:', err);
+                    return;
+                }
+                console.log(results);
+                console.log(fields);
+            }
         );
-        res.status(201).send('Usuário criado com sucesso!');
+        res.status(201).send({message: 'Usuário criado com sucesso!'});
     } catch (err) {
         res.status(500).send('Erro ao criar usuário: ' + err.message);
     }
 });
 
 // POST ADMIN
-app.post('/cadastrar_admin', async (req, res) => {
+app.post('/cadastrar_admin',(req, res) => {
     const { nome, sobrenome, email, senha, organizacao } = req.body;
     try {
-        await db.query(
+         db.query(
             `INSERT INTO usuarios (nome, sobrenome, email, senha, organizacao, tipo) VALUES (?, ?, ?, ?, ?, 'admin')`,
-            [nome, sobrenome, email, senha, organizacao]
+            [nome, sobrenome, email, senha, organizacao],
+            function (err, results, fields) {
+                if (err) {
+                    console.error('Erro na inserção:', err);
+                    return;
+                }
+                console.log(results);
+                console.log(fields);
+            }
+           
         );
         res.status(201).send('Admin criado com sucesso!');
+        
     } catch (err) {
         res.status(500).send('Erro ao criar admin: ' + err.message);
+        
     }
 });
 
 // GET ALL ADMINS
-app.get('/visualizar_admins', async (req, res) => {
+app.get('/visualizar_admins',(req, res) => {
     try {
-        const [admins] = await db.query(`SELECT * FROM usuarios WHERE tipo = 'admin'`);
+        const [admins] = db.query(`SELECT * FROM usuarios WHERE tipo = 'admin'`);
         res.status(200).json(admins);
     } catch (err) {
         res.status(500).send('Erro ao buscar admins: ' + err.message);
@@ -129,10 +148,10 @@ app.get('/visualizar_admins', async (req, res) => {
 });
 
 // DELETE ADMIN
-app.delete('/deletar_admin/:id', async (req, res) => {
+app.delete('/deletar_admin/:id',(req, res) => {
     const { id } = req.params;
     try {
-        await db.query(`DELETE FROM usuarios WHERE id = ? AND tipo = 'admin'`, [id]);
+         db.query(`DELETE FROM usuarios WHERE id = ? AND tipo = 'admin'`, [id]);
         res.status(200).send('Admin deletado com sucesso!');
     } catch (err) {
         res.status(500).send('Erro ao deletar admin: ' + err.message);
@@ -140,9 +159,9 @@ app.delete('/deletar_admin/:id', async (req, res) => {
 });
 
 // GET ALL TASKS
-app.get('/visualizar_all_tasks', async (req, res) => {
+app.get('/visualizar_all_tasks',(req, res) => {
     try {
-        const [tarefas] = await db.query(`SELECT * FROM tarefas`);
+        const [tarefas] = db.query(`SELECT * FROM tarefas`);
         res.status(200).json(tarefas);
     } catch (err) {
         res.status(500).send('Erro ao buscar tarefas: ' + err.message);
@@ -150,11 +169,11 @@ app.get('/visualizar_all_tasks', async (req, res) => {
 });
 
 // PUT TASK
-app.put('/update_task/:id', async (req, res) => {
+app.put('/update_task/:id',(req, res) => {
     const { id } = req.params;
     const { titulo, descricao, status, prazo } = req.body;
     try {
-        await db.query(
+         db.query(
             `UPDATE tarefas SET titulo = ?, descricao = ?, status = ?, prazo = ? WHERE id = ?`,
             [titulo, descricao, status, prazo, id]
         );
@@ -164,25 +183,11 @@ app.put('/update_task/:id', async (req, res) => {
     }
 });
 
-// POST USER
-app.post('/cadastrar_user', async (req, res) => {
-    const { nome, sobrenome, email, senha, organizacao } = req.body;
-    try {
-        await db.query(
-            `INSERT INTO usuarios (nome, sobrenome, email, senha, organizacao, tipo) VALUES (?, ?, ?, ?, ?, 'usuario')`,
-            [nome, sobrenome, email, senha, organizacao]
-        );
-        res.status(201).send('Usuário criado com sucesso!');
-    } catch (err) {
-        res.status(500).send('Erro ao criar usuário: ' + err.message);
-    }
-});
-
 // GET USER
-app.get('/visualizar_user/:id', async (req, res) => {
+app.get('/visualizar_user/:id',(req, res) => {
     const { id } = req.params;
     try {
-        const [usuario] = await db.query(`SELECT * FROM usuarios WHERE id = ? AND tipo = 'usuario'`, [id]);
+        const [usuario] = db.query(`SELECT * FROM usuarios WHERE id = ? AND tipo = 'usuario'`, [id]);
         res.status(200).json(usuario);
     } catch (err) {
         res.status(500).send('Erro ao buscar usuário: ' + err.message);
@@ -190,10 +195,10 @@ app.get('/visualizar_user/:id', async (req, res) => {
 });
 
 // GET USER TASKS
-app.get('/visualizar_user/:id/tasks', async (req, res) => {
+app.get('/visualizar_user/:id/tasks',(req, res) => {
     const { id } = req.params;
     try {
-        const [tarefas] = await db.query(`SELECT * FROM tarefas WHERE id_usuario = ?`, [id]);
+        const [tarefas] =  db.query(`SELECT * FROM tarefas WHERE id_usuario = ?`, [id]);
         res.status(200).json(tarefas);
     } catch (err) {
         res.status(500).send('Erro ao buscar tarefas do usuário: ' + err.message);
@@ -201,11 +206,11 @@ app.get('/visualizar_user/:id/tasks', async (req, res) => {
 });
 
 // PUT USER TASK
-app.put('/update_user/:id/tasks/:idTask', async (req, res) => {
+app.put('/update_user/:id/tasks/:idTask',(req, res) => {
     const { id, idTask } = req.params;
     const { titulo, descricao, status, prazo } = req.body;
     try {
-        await db.query(
+        db.query(
             `UPDATE tarefas SET titulo = ?, descricao = ?, status = ?, prazo = ? WHERE id = ? AND id_usuario = ?`,
             [titulo, descricao, status, prazo, idTask, id]
         );
@@ -216,10 +221,10 @@ app.put('/update_user/:id/tasks/:idTask', async (req, res) => {
 });
 
 // DELETE USER TASK
-app.delete('/delete_user/:id/tasks/:idTask', async (req, res) => {
+app.delete('/delete_user/:id/tasks/:idTask',(req, res) => {
     const { id, idTask } = req.params;
     try {
-        const [result] = await db.query(
+        const [result] = db.query(
             `DELETE FROM tarefas WHERE id = ? AND id_usuario = ?`,
             [idTask, id]
         );
