@@ -1,169 +1,200 @@
-* {
-    padding: 0;
-    margin: 0;
-    box-sizing: border-box;
-    font-family: "Tienne", serif;
+* 
+{
+	padding: 0;
+	margin: 0;
+	box-sizing: border-box;
+	font-family: "Tienne", serif;
 }
 
 html,
-body
+body 
 {
-    height: 100vh;
-    width: 100vw;
-    background-color: #DBDBDB;
-    background-image: url('./assets/images/Hex_Back_Black.png');
-    background-size: 100%;
-    background-repeat: no-repeat;
-    background-attachment: fixed;
+	height: 100vh;
+	width: 100vw;
+	background-color: #dbdbdb;
+	background-image: url("./assets/images/Hex_Back_Black.png");
+	background-size: 100%;
+	background-repeat: no-repeat;
+	background-attachment: fixed;
 }
 
 .dark-mode html,
 .dark-mode body 
 {
-    background-color: #1A1A1A;
-    background-image: url('./assets/images/Hex_Back_Yellow.png');
+	background-color: #1a1a1a;
+	background-image: url("./assets/images/Hex_Back_Yellow.png");
 }
 
 body 
 {
-    transition: background-color 0.3s, background-image 0.3s;
+	transition: background-color 0.3s, background-image 0.3s;
 }
 
-button
+button 
 {
-    cursor: pointer;
-    background-color: #000000;
-    color: #DBDBDB;
-    border: none;
-    padding: 1.5%;
-    width: 78%;
+	cursor: pointer;
+	background-color: #000000;
+	color: #dbdbdb;
+	border: none;
+	padding: 1.5%;
+	width: 78%;
 }
 
-button:hover
+button:hover 
 {
-    background-color: #CF7500;
-    color: #000000;
+	background-color: #cf7500;
+	color: #000000;
 }
 
 .navbar,
-.header
+.header 
 {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px 20px;
-    color: black;
-    background-color: #F0A500;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 10px 20px;
+	color: black;
+	background-color: #f0a500;
 }
 
 .navbar h1 
 {
-    margin: 0;
+	margin: 0;
 }
 
 .navbar ul 
 {
-    list-style: none;
-    display: flex;
-    margin: 0;
-    padding: 0;
+	list-style: none;
+	display: flex;
+	margin: 0;
+	padding: 0;
 }
 
 .navbar ul li 
 {
-    margin-right: 20px;
+	margin-right: 20px;
 }
 
 .navbar ul li a 
 {
-    color: black;
-    text-decoration: none;
+	color: black;
+	text-decoration: none;
 }
 
 .navbar ul li a:hover 
 {
-    text-decoration: underline;
+	text-decoration: underline;
 }
 
 .active-link 
 {
-    font-weight: bold;
-    text-decoration: underline;
+	font-weight: bold;
+	text-decoration: underline;
 }
 
-img
+img 
 {
-    width: 5%;
-
+	width: 5%;
 }
-
-
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
 
 /* margin-right: 78%; */
 
-
 .form-container 
 {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin: 8% 30%;
-    padding: 2%;
-    background-color: #ffa500;
-   width: 80%;
-    max-width: 600px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  }
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	margin: 8% 30%;
+	padding: 2%;
+	background-color: #ffa500;
+	width: 80%;
+	max-width: 600px;
+	box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
 
 .task-form 
 {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-  }
-  
- 
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	gap: 1rem;
+}
 
-  .form-row 
-  {
-    display: flex;
-    align-items: center;
-    align-content: center;
-    justify-content: center;
-    gap: 1rem;
-  }
-  
-  label 
-  {
-    display: flex;
-    flex-direction: column;
-    flex: 1;
-  }
-  
-  input,
-  select,
-  textarea 
-  {
-    padding: 0.5rem;
-    border: none;
-    margin-top: 0.5rem;
-    font-size: 1rem;
-  }
-  
-  
-  textarea 
-  {
-    height: 100px;
-    resize: none;
-  }
+.form-row 
+{
+	display: flex;
+	align-items: center;
+	align-content: center;
+	justify-content: center;
+	gap: 1rem;
+}
 
- 
-/* >>>>>>> 3df59ec3ffc3a3b18e1ab379b567c85705b2e6c5 */
+label 
+{
+	display: flex;
+	flex-direction: column;
+	flex: 1;
+}
+
+input,
+select,
+textarea 
+{
+	padding: 0.5rem;
+	border: none;
+	margin-top: 0.5rem;
+	font-size: 1rem;
+}
+
+textarea 
+{
+	height: 100px;
+	resize: none;
+}
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
+/* CONFIGURAÇÃO DO LAYOUT */
+.Hex_Layout_Tasks
+{
+	display: flex;
+	flex-wrap: wrap;
+	width: 94%;
+	align-items: center;
+	align-content: center;
+	align-self: center;
+	justify-content: center;
+	padding: 2%;
+	margin-left: 6% ;
+}
+
+.layout_left
+{
+	display: flex;
+	flex-wrap: wrap;
+	width: 98%;
+	margin-left: -5%;
+}
+
+.layout_right
+{
+	display: flex;
+	flex-wrap: wrap;
+	width: 98%;
+	margin-left: 7.3%;
+	margin-top: -4.1%;
+}
+
+.hex_teste
+{
+	display: flex;
+	flex-direction: column;
+	width: 200px;
+	height: 200px;
+	background-color: #F0A500;
+	clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+	margin: 0.5%;
+}
