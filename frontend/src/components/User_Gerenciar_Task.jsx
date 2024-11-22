@@ -1,10 +1,11 @@
 import User_Navbar from "../components/User_Navbar"
+import Form_Cadastro_Task from "./Form_Cadastro_Task"
 
 export default function User_Cadastrar_Task() {
     return (
         <>
-            <User_Navbar/>
-            <h1>User_Cadastrar_Task</h1>
+
+            <Form_Cadastro_Task/>
         </>
     )
 }
