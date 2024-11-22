@@ -20,7 +20,7 @@ CREATE TABLE tarefas (
     titulo VARCHAR(50) NOT NULL,
     descricao TEXT,
     status ENUM('pendente', 'em_andamento', 'concluida') DEFAULT 'pendente' NOT NULL,
-    prazo DATETIME DEFAULT NULL,
+    prazo DATE NOT NULL,
     FOREIGN KEY (id_usuario) REFERENCES usuarios(id) ON DELETE CASCADE
 );
 

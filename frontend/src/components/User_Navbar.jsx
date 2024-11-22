@@ -8,6 +8,11 @@ export default function User_Navbar() {
             <img src={Logo} alt="Logo" />
             <ul>
                 <li>
+					<NavLink to="/user_visualizar_tasks" activeClassName="active-link">
+						Visualizar Tarefas
+					</NavLink>
+				</li>
+                <li>
                     <NavLink to="/user-cadastrar-task" className={({ isActive }) => (isActive ? "active-link" : "")}>
                         Cadastrar Tarefa
                     </NavLink>
@@ -22,6 +27,7 @@ export default function User_Navbar() {
                         Gerenciar Usuário
                     </NavLink>
                 </li>
+                
             </ul>
             <Dark_Mode />
         </nav>

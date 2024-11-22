@@ -116,9 +116,12 @@ app.post('/cadastrar_user', (req, res) => {
 app.post('/cadastrar_admin',(req, res) => {
     const { nome, sobrenome, email, senha, organizacao } = req.body;
     try {
+         // Criptografia da senha
+         const senhaCriptografada = CryptoJS.AES.encrypt(senha, 'chaveSecreta').toString();
+         console.log(nome,sobrenome,email,senha,organizacao)
          db.query(
             `INSERT INTO usuarios (nome, sobrenome, email, senha, organizacao, tipo) VALUES (?, ?, ?, ?, ?, 'admin')`,
-            [nome, sobrenome, email, senha, organizacao],
+            [nome, sobrenome, email, senhaCriptografada, organizacao],
             function (err, results, fields) {
                 if (err) {
                     console.error('Erro na inserção:', err);
@@ -137,12 +140,44 @@ app.post('/cadastrar_admin',(req, res) => {
     }
 });
 
+// POST TASK
+app.post('/cadastrar_task',(req, res) => {
+    const {titulo, descricao, status, prazo, id_usuario} = req.body;
+    try{
+        db.query(
+            `INSERT INTO tarefas (id_usuario, titulo, descricao, status, prazo) VALUES (?, ?, ?, ?, ?)`,
+            [id_usuario, titulo, descricao, status, prazo],
+            function (err, results, fields) {
+                if (err) {
+                console.error('Erro na inserção:', err);
+                    return;
+                    }
+                    console.log(results);
+                    console.log(fields);
+                }
+            );
+            res.status(201).send('Tarefa criada com sucesso!');
+            
+        } catch (err) {
+            res.status(500).send('Erro ao criar tarefa: ' + err.message);
+            }
+});
+
 // GET ALL ADMINS
-app.get('/visualizar_admins',(req, res) => {
+app.get('/visualizar_admins', async (req, res) => {
     try {
-        const [admins] = db.query(`SELECT * FROM usuarios WHERE tipo = 'admin'`);
+        // Realiza a consulta assíncrona
+        const [admins] = await db.promise().query(`SELECT * FROM usuarios WHERE tipo = 'admin'`);
+        
+        // Verifica se encontrou algum admin
+        if (admins.length === 0) {
+            return res.status(404).json({ message: 'Nenhum admin encontrado' });
+        }
+
+        // Retorna todos os admins encontrados
         res.status(200).json(admins);
     } catch (err) {
+        console.error('Erro ao buscar admins:', err.message);
         res.status(500).send('Erro ao buscar admins: ' + err.message);
     }
 });
@@ -159,11 +194,20 @@ app.delete('/deletar_admin/:id',(req, res) => {
 });
 
 // GET ALL TASKS
-app.get('/visualizar_all_tasks',(req, res) => {
+app.get('/visualizar_all_tasks', async (req, res) => {
     try {
-        const [tarefas] = db.query(`SELECT * FROM tarefas`);
+        // Realiza a consulta assíncrona para buscar todas as tarefas
+        const [tarefas] = await db.promise().query(`SELECT * FROM tarefas`);
+        
+        // Verifica se encontrou tarefas
+        if (tarefas.length === 0) {
+            return res.status(404).json({ message: 'Nenhuma tarefa encontrada' });
+        }
+
+        // Retorna todas as tarefas encontradas
         res.status(200).json(tarefas);
     } catch (err) {
+        console.error('Erro ao buscar tarefas:', err.message);
         res.status(500).send('Erro ao buscar tarefas: ' + err.message);
     }
 });
@@ -184,23 +228,42 @@ app.put('/update_task/:id',(req, res) => {
 });
 
 // GET USER
-app.get('/visualizar_user/:id',(req, res) => {
+app.get('/visualizar_user/:id', async (req, res) => {
     const { id } = req.params;
+    
     try {
-        const [usuario] = db.query(`SELECT * FROM usuarios WHERE id = ? AND tipo = 'usuario'`, [id]);
-        res.status(200).json(usuario);
+        // Realiza a consulta assíncrona
+        const [usuarios] = await db.promise().query(`SELECT * FROM usuarios WHERE id = ? AND tipo = 'usuario'`, [id]);
+        
+        if (usuarios.length === 0) {
+            return res.status(404).json({ message: 'Usuário não encontrado' });
+        }
+
+        // Retorna o usuário encontrado
+        res.status(200).json(usuarios[0]); // Se quiser retornar o primeiro usuário, ou altere conforme necessário
     } catch (err) {
+        console.error('Erro ao buscar usuário:', err.message);
         res.status(500).send('Erro ao buscar usuário: ' + err.message);
     }
 });
 
 // GET USER TASKS
-app.get('/visualizar_user/:id/tasks',(req, res) => {
+app.get('/visualizar_user/:id/tasks', async (req, res) => {
     const { id } = req.params;
+    
     try {
-        const [tarefas] =  db.query(`SELECT * FROM tarefas WHERE id_usuario = ?`, [id]);
+        // Realiza a consulta assíncrona para buscar as tarefas do usuário com id específico
+        const [tarefas] = await db.promise().query(`SELECT * FROM tarefas WHERE id_usuario = ?`, [id]);
+        
+        // Verifica se encontrou tarefas
+        if (tarefas.length === 0) {
+            return res.status(404).json({ message: `Nenhuma tarefa encontrada para o usuário com ID ${id}` });
+        }
+
+        // Retorna as tarefas encontradas
         res.status(200).json(tarefas);
     } catch (err) {
+        console.error('Erro ao buscar tarefas do usuário:', err.message);
         res.status(500).send('Erro ao buscar tarefas do usuário: ' + err.message);
     }
 });
