@@ -8,7 +8,7 @@ CREATE TABLE usuarios
     nome VARCHAR(30) NOT NULL,
     sobrenome VARCHAR(30) NOT NULL,
     email VARCHAR(50) UNIQUE NOT NULL,
-    senha VARCHAR(32) NOT NULL,
+    senha VARCHAR(255) NOT NULL,
     organizacao VARCHAR(50),
     tipo ENUM('admin', 'usuario') DEFAULT 'usuario' NOT NULL
 );
@@ -23,3 +23,7 @@ CREATE TABLE tarefas (
     prazo DATETIME DEFAULT NULL,
     FOREIGN KEY (id_usuario) REFERENCES usuarios(id) ON DELETE CASCADE
 );
+
+SELECT * FROM usuarios;
+
+SELECT * FROM tarefas;
