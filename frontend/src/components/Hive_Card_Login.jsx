@@ -55,6 +55,7 @@ export default function Hive_Card_Login() {
                     onChange={handleEmailChange}
                     placeholder="Digite seu email"
                 />
+                <br />
                 <label htmlFor="hex-2">Senha:</label>
                 <input
                     type="password"
