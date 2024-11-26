@@ -1,53 +1,78 @@
 --- Lista de usuários para testes --
 
 Usuário 01:
-- nome: Fulano01
-- sobrenome: surname01
-- email: fulano01@gmail.com
-- senha: @Fulano012345
-- organização: Fulanos
+- Nome: John 
+- Sobrenome: Stones
+- Email: john.stones@example.com
+- Senha: Stones123!
+- Organização: GreenTech Solutions
 
 Usuário 02:
-- nome: Fulano02
-- sobrenome: surname02
-- email: fulano02@outlook.com
-- senha: @Fulano0123456
-- organização: Fulanos
-
+- Nome: David 
+- Sobrenome: Ackles
+- Email: david.ackles@example.com
+- Senha: Ackles2023@
+- Organização: BrightFuture Corp
 
 Usuário 03:
-- nome: Fulano03
-- sobrenome: surname03
-- email: fulano03@yahoo.com
-- senha: @Fulano01234567
+- Nome: Laura 
+- Sobrenome: Bennett
+- Email: laura.bennett@example.com
+- Senha: Bennett$456
+- Organização: NovaData Systems
+
+Usuário 04:
+- Nome: Sophie 
+- Sobrenome: Klein
+- Email: sophie.klein@example.com
+- Senha: Klein!890
+- Organização: CloudSpark Innovations
+
+Usuário 05:
+- Nome: Carlos 
+- Sobrenome: Mendes
+- Email: carlos.mendes@example.com
+- Senha: Mendes#741
+- Organização: SunTech Solutions
 
 ADMIN:
-- nome : Admin01
-- sobrenome: adminsurname01
-- email: adminteste@gmail.com
-- senha: @Adminequivocadoestressado789123
-- organização: Admins
+- Nome : Admin01
+- Sobrenome: adminsurname01
+- Email: adminteste@gmail.com
+- Senha: @Adminequivocadoestressado789123
+- Organização: Admins
 
 
 -- Lista de tarefas para testes --
 
 Tarefa 01:
-- titulo: titulo01
-- descrição: descrição01
-- status: pendente
-- prazo: 2024-11-22
+- Título: Revisar documentação técnica
+- Descrição: Avaliar e corrigir erros nos manuais técnicos da equipe.
+- Status: pendente
+- Prazo: 2024-12-10
 
 Tarefa 02:
-- titulo: titulo02
-- descrição: descrição02
-- status: pendente
-- prazo: 2024-10-22
+- Título: Atualizar base de dados
+- Descrição: Realizar a migração da base de dados do sistema antigo para o novo.
+- Status: pendente
+Prazo: 2024-12-05
 
 Tarefa 03:
-- titulo: titulo03
-- descrição: descrição03
-- status: pendente
-- prazo: 2024-09-22
+- Título: Criar apresentação para reunião
+- Descrição: Desenvolver slides para a reunião de planejamento anual.
+- Status: pendente
+- Prazo: 2024-12-08
 
+Tarefa 04:
+- Título: Implementar novo sistema de segurança
+- Descrição: Configurar firewall e autenticação de dois fatores no sistema.
+- Status: pendente
+Prazo: 2024-12-15
+
+Tarefa 05:
+- Título: Realizar auditoria financeira
+- Descrição: Analisar as contas da empresa e preparar relatório detalhado.
+- Status: pendente
+- Prazo: 2024-12-20
 
 

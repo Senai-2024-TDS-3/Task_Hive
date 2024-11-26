@@ -3,7 +3,7 @@ import Home from './Home'
 function App() {
 	return (
 		<>
-			<Teste />
+			<Home />
 		</>
 	)
 }

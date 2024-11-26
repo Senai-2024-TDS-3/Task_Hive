@@ -1,25 +1,39 @@
 import ReactDOM from "react-dom/client";
 import { BrowserRouter, RouterProvider, createBrowserRouter } from "react-router-dom";
 import App from "./App";
+import User_Start from "./pages/User_Start";
+import Admin_Start from "./pages/Admin_Start";
+import Admin_Visualizar_User from "./components/Admin_Visualizar_User";
+import Admin_Visualizar_Tasks from "./components/Admin_Visualizar_Tasks";
 import "./index.css";
 
 const router = createBrowserRouter([
-	{
-		path: "/",
-		element: <App/>,
-	},
+    {
+        path: "/",
+        element: <App />,
+    },
+    {
+        path: "/user_start",
+        element: <User_Start />,
+    },
+    {
+        path: "/admin_start",
+        element: <Admin_Start />,
+    },
 	{
 		path: "/cadastrar-task",
 		element: "<Tarefas />"
 	},
 	{
-		path: "/admin-gerenciar-use",
-		element: "<Usuários />"
+		path: "/admin_visualizar_user",
+		element: <Admin_Visualizar_User />,
+	},
+	{
+		path: "/admin_visualizar_task",
+		element: <Admin_Visualizar_Tasks />
 	}
-])
+]);
 
 ReactDOM.createRoot(document.getElementById("root")).render(
-		<RouterProvider router={router}/>
-
-
+    <RouterProvider router={router} />
 );

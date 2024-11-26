@@ -1,116 +1,109 @@
-const express = require('express');
-const cors = require('cors');
-const db = require('./db');
+const express = require("express");
+const cors = require("cors");
+const db = require("./db");
 const nodemailer = require("nodemailer");
-const CryptoJS = require('crypto-js');
+const CryptoJS = require("crypto-js");
 const app = express();
 
 app.use(express.json());
-app.use(cors({ origin: '*' }));
+app.use(cors({ origin: "*" }));
 
-// COM A PORTA 3000 NÃO ESTAVA FUNCIONANDO
 const port = 3001;
 
 app.listen(port, () => {
     console.log(`Servidor rodando em http://localhost:${port}`);
 });
 
-// CONFIGURAÇÃO DO NODEMAILER
 const transporter = nodemailer.createTransport({
     service: "gmail",
     auth: {
-      user: "seu-email@gmail.com", // Substitua pelo seu email
-      pass: "sua-senha", // Substitua pela sua senha (use app password se necessário)
+        user: "seu-email@gmail.com",
+        pass: "sua-senha",
     },
-  });
-  
-  // ROTA PARA ESQUECI MINHA SENHA
-  app.post("/esqueci-minha-senha", async (req, res) => {
+});
+
+app.post("/esqueci-minha-senha", (req, res) => {
     const { email } = req.body;
-  
-    try {
-      const [usuarios] = await db.query("SELECT * FROM usuarios WHERE email = ?", [email]);
-  
-      if (usuarios.length === 0) {
-        return res.status(404).send("Usuário não encontrado!");
-      }
-  
-      const token = CryptoJS.AES.encrypt(email, "chaveSecreta").toString();
-      const resetLink = `http://localhost:3000/redefinir-senha?token=${encodeURIComponent(token)}`;
-  
-      await transporter.sendMail({
-        from: "seu-email@gmail.com",
-        to: email,
-        subject: "Redefinição de senha",
-        html: `<p>Clique no link para redefinir sua senha: <a href="${resetLink}">${resetLink}</a></p>`,
-      });
-  
-      res.status(200).send("E-mail enviado com sucesso!");
-    } catch (err) {
-      console.error(err);
-      res.status(500).send("Erro ao enviar e-mail.");
-    }
-  });
 
-
-// PRECISA TESTAR TODOS OS PATHS COM O POSTMAN (AQUI DEU ERRO, MAS ENVIOU PARA O BANCO DE DADOS)
-
-// POST LOGIN
-app.post('/login', async (req, res) => {
-    const { email, senha } = req.body;
-
-    try {
-        // Buscar usuário no banco de dados
-        const [usuarios] = await db.query('SELECT * FROM usuarios WHERE email = ?', [email]);
-
-        if (usuarios.length === 0) {
-            return res.status(401).send('Usuário não encontrado!');
+    db.query("SELECT * FROM usuarios WHERE email = ?", [email], (err, results) => {
+        if (err) {
+            console.error("Erro ao buscar usuário:", err);
+            return res.status(500).send("Erro ao buscar usuário.");
         }
 
-        // Descriptografando a senha armazenada no banco (com AES)
-        const usuario = usuarios[0];
-        const bytes  = CryptoJS.AES.decrypt(usuario.senha, 'chaveSecreta');
+        if (results.length === 0) {
+            return res.status(404).send("Usuário não encontrado!");
+        }
+
+        const token = CryptoJS.AES.encrypt(email, "chaveSecreta").toString();
+        const resetLink = `http://localhost:3000/redefinir-senha?token=${encodeURIComponent(token)}`;
+
+        transporter.sendMail(
+            {
+                from: "seu-email@gmail.com",
+                to: email,
+                subject: "Redefinição de senha",
+                html: `<p>Clique no link para redefinir sua senha: <a href="${resetLink}">${resetLink}</a></p>`,
+            },
+            (emailErr, info) => {
+                if (emailErr) {
+                    console.error("Erro ao enviar e-mail:", emailErr);
+                    return res.status(500).send("Erro ao enviar e-mail.");
+                }
+
+                res.status(200).send("E-mail enviado com sucesso!");
+            }
+        );
+    });
+});
+
+app.post("/login", (req, res) => {
+    const { email, senha } = req.body;
+
+    db.query("SELECT * FROM usuarios WHERE email = ?", [email], (err, results) => {
+        if (err) {
+            console.error("Erro no login:", err);
+            return res.status(500).send("Erro ao fazer login");
+        }
+
+        if (results.length === 0) {
+            return res.status(401).send("Usuário não encontrado!");
+        }
+
+        const usuario = results[0];
+        const bytes = CryptoJS.AES.decrypt(usuario.senha, "chaveSecreta");
         const senhaDescriptografada = bytes.toString(CryptoJS.enc.Utf8);
 
-        // Comparando a senha criptografada enviada com a senha descriptografada
         if (senhaDescriptografada !== senha) {
-            return res.status(401).send('Senha incorreta!');
+            return res.status(401).send("Senha incorreta!");
         }
 
         // Login bem-sucedido
-        res.status(200).send('Login bem-sucedido!');
-
-    } catch (err) {
-        console.error(err);
-        res.status(500).send('Erro ao fazer login');
-    }
+        res.status(200).json({
+            message: "Login bem-sucedido!",
+            redirect: usuario.tipo === "admin" ? "Admin_Start" : "User_Start",
+        });
+    });
 });
 
-// POST USER
-app.post('/cadastrar_user', (req, res) => {
+app.post("/cadastrar_user", async (req, res) => {
     const { nome, sobrenome, email, senha, organizacao } = req.body;
 
     try {
-        // Criptografia da senha
-        const senhaCriptografada = CryptoJS.AES.encrypt(senha, 'chaveSecreta').toString();
-            console.log(nome,sobrenome,email,senha,organizacao)
-        db.query(
+        const senhaCriptografada = CryptoJS.AES.encrypt(senha, "chaveSecreta").toString();
+
+        await db.query(
             `INSERT INTO usuarios (nome, sobrenome, email, senha, organizacao, tipo) VALUES (?, ?, ?, ?, ?, 'usuario')`,
-            [nome, sobrenome, email, senhaCriptografada, organizacao],
-            function (err, results, fields) {
-                if (err) {
-                    console.error('Erro na inserção:', err);
-                    return;
-                }
-                console.log(results);
-                console.log(fields);
-            }
+            [nome, sobrenome, email, senhaCriptografada, organizacao]
         );
-        res.status(201).send({message: 'Usuário criado com sucesso!'});
+
+        res.status(201).send({ message: "Usuário criado com sucesso!" });
     } catch (err) {
-        res.status(500).send('Erro ao criar usuário: ' + err.message);
+        console.error("Erro ao criar usuário:", err);
+        res.status(500).send("Erro ao criar usuário");
     }
 });
+
 
 // POST ADMIN
 app.post('/cadastrar_admin',(req, res) => {

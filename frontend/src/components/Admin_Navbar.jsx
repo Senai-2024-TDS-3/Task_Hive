@@ -8,12 +8,12 @@ export default function Admin_Navbar() {
             <img src={ Logo } alt="Logo" />
 			<ul>
 				<li>
-					<NavLink to="/cadastrar-task" activeClassName="active-link">
+					<NavLink to="/admin_visualizar_task" activeClassName="active-link">
 						Tarefas
 					</NavLink>
 				</li>
 				<li>
-					<NavLink to="/admin-gerenciar-user" activeClassName="active-link">
+					<NavLink to="/admin_visualizar_user" activeClassName="active-link">
 						Usuários
 					</NavLink>
 				</li>
