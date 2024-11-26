@@ -1,0 +1,53 @@
+--- Lista de usuários para testes --
+
+Usuário 01:
+- nome: Fulano01
+- sobrenome: surname01
+- email: fulano01@gmail.com
+- senha: @Fulano012345
+- organização: Fulanos
+
+Usuário 02:
+- nome: Fulano02
+- sobrenome: surname02
+- email: fulano02@outlook.com
+- senha: @Fulano0123456
+- organização: Fulanos
+
+
+Usuário 03:
+- nome: Fulano03
+- sobrenome: surname03
+- email: fulano03@yahoo.com
+- senha: @Fulano01234567
+
+ADMIN:
+- nome : Admin01
+- sobrenome: adminsurname01
+- email: adminteste@gmail.com
+- senha: @Adminequivocadoestressado789123
+- organização: Admins
+
+
+-- Lista de tarefas para testes --
+
+Tarefa 01:
+- titulo: titulo01
+- descrição: descrição01
+- status: pendente
+- prazo: 2024-11-22
+
+Tarefa 02:
+- titulo: titulo02
+- descrição: descrição02
+- status: pendente
+- prazo: 2024-10-22
+
+Tarefa 03:
+- titulo: titulo03
+- descrição: descrição03
+- status: pendente
+- prazo: 2024-09-22
+
+
+
