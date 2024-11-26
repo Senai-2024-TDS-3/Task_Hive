@@ -187,15 +187,15 @@ app.delete('/deletar_admin/:id',(req, res) => {
 });
 
 // GET ALL TASKS
-app.get('/visualizar_all_tasks', async (req, res) => {
-    try {
-        // Realiza a consulta assíncrona para buscar todas as tarefas
-        const [tarefas] = await db.promise().query(`SELECT * FROM tarefas`);
-        
-        // Verifica se encontrou tarefas
-        if (tarefas.length === 0) {
-            return res.status(404).json({ message: 'Nenhuma tarefa encontrada' });
-        }
+    app.get('/visualizar_all_tasks', async (req, res) => {
+        try {
+            // Realiza a consulta assíncrona para buscar todas as tarefas
+            const [tarefas] = await db.promise().query(`SELECT * FROM tarefas`);
+            
+            // Verifica se encontrou tarefas
+            if (tarefas.length === 0) {
+                return res.status(404).json({ message: 'Nenhuma tarefa encontrada' });
+            }
 
         // Retorna todas as tarefas encontradas
         res.status(200).json(tarefas);

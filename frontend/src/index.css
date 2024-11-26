@@ -190,6 +190,26 @@ textarea
 	margin: 0.5%;
 }
 
+<<<<<<< HEAD
+.hex_user
+=======
+.hex_task
+>>>>>>> 38a2dd8e905a46ce6c809855eeb8adedc69ae127
+{
+	display: flex;
+	flex-direction: column;
+	flex-wrap: wrap;
+	align-items: center;
+	align-content: center;
+	justify-content: center;
+	width: 200px;
+	height: 200px;
+	background-color: #F0A500;
+	color: black;
+	clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+	margin: 0.5%;
+}
+
 .hex_wrapper
 {
 	flex-direction: column;
@@ -203,6 +223,10 @@ textarea
 	clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
 	margin: 0.5%;
 	padding: 0.05%;
+}
+
+.lista_task{
+	font-size: 8px;
 }
 
 .hex_teste:hover
