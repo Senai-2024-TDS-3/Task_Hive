@@ -4,7 +4,7 @@ import axios from 'axios';
 export default function Hex_Cell_User() {
     const ListaUsuarios = () => {
         const [usuarios, setUsuarios] = useState([]);
-       
+    
     
         useEffect(() => {
             // Fazendo a requisição para a API
@@ -17,7 +17,7 @@ export default function Hex_Cell_User() {
                 });
         }, []);
 
-      
+    
     const [tasks, setTasks] = useState([])
 
         const MaxLeft = 7
