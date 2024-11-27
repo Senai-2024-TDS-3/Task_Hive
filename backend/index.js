@@ -110,9 +110,9 @@ app.post('/cadastrar_admin',(req, res) => {
     const { nome, sobrenome, email, senha, organizacao } = req.body;
     try {
          // Criptografia da senha
-         const senhaCriptografada = CryptoJS.AES.encrypt(senha, 'chaveSecreta').toString();
-         console.log(nome,sobrenome,email,senha,organizacao)
-         db.query(
+        const senhaCriptografada = CryptoJS.AES.encrypt(senha, 'chaveSecreta').toString();
+        console.log(nome,sobrenome,email,senha,organizacao)
+        db.query(
             `INSERT INTO usuarios (nome, sobrenome, email, senha, organizacao, tipo) VALUES (?, ?, ?, ?, ?, 'admin')`,
             [nome, sobrenome, email, senhaCriptografada, organizacao],
             function (err, results, fields) {
@@ -123,7 +123,7 @@ app.post('/cadastrar_admin',(req, res) => {
                 console.log(results);
                 console.log(fields);
             }
-           
+        
         );
         res.status(201).send('Admin criado com sucesso!');
         
@@ -133,28 +133,28 @@ app.post('/cadastrar_admin',(req, res) => {
     }
 });
 
-// POST TASK
-app.post('/cadastrar_task',(req, res) => {
-    const {titulo, descricao, status, prazo, id_usuario} = req.body;
-    try{
-        db.query(
-            `INSERT INTO tarefas (id_usuario, titulo, descricao, status, prazo) VALUES (?, ?, ?, ?, ?)`,
-            [id_usuario, titulo, descricao, status, prazo],
-            function (err, results, fields) {
-                if (err) {
-                console.error('Erro na inserção:', err);
-                    return;
+    // POST TASK
+    app.post('/cadastrar_task',(req, res) => {
+        const {titulo, descricao, status, prazo, id_usuario} = req.body;
+        try{
+            db.query(
+                `INSERT INTO tarefas (id_usuario, titulo, descricao, status, prazo) VALUES (?, ?, ?, ?, ?)`,
+                [id_usuario, titulo, descricao, status, prazo],
+                function (err, results, fields) {
+                    if (err) {
+                    console.error('Erro na inserção:', err);
+                        return;
+                        }
+                        console.log(results);
+                        console.log(fields);
                     }
-                    console.log(results);
-                    console.log(fields);
+                );
+                res.status(201).send('Tarefa criada com sucesso!');
+                
+            } catch (err) {
+                res.status(500).send('Erro ao criar tarefa: ' + err.message);
                 }
-            );
-            res.status(201).send('Tarefa criada com sucesso!');
-            
-        } catch (err) {
-            res.status(500).send('Erro ao criar tarefa: ' + err.message);
-            }
-});
+    });
 
 // GET ALL ADMINS
 app.get('/visualizar_admins', async (req, res) => {
@@ -179,7 +179,7 @@ app.get('/visualizar_admins', async (req, res) => {
 app.delete('/deletar_admin/:id',(req, res) => {
     const { id } = req.params;
     try {
-         db.query(`DELETE FROM usuarios WHERE id = ? AND tipo = 'admin'`, [id]);
+        db.query(`DELETE FROM usuarios WHERE id = ? AND tipo = 'admin'`, [id]);
         res.status(200).send('Admin deletado com sucesso!');
     } catch (err) {
         res.status(500).send('Erro ao deletar admin: ' + err.message);
@@ -210,7 +210,7 @@ app.put('/update_task/:id',(req, res) => {
     const { id } = req.params;
     const { titulo, descricao, status, prazo } = req.body;
     try {
-         db.query(
+        db.query(
             `UPDATE tarefas SET titulo = ?, descricao = ?, status = ?, prazo = ? WHERE id = ?`,
             [titulo, descricao, status, prazo, id]
         );
