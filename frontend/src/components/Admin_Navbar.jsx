@@ -17,6 +17,11 @@ export default function Admin_Navbar() {
 						Usuários
 					</NavLink>
 				</li>
+				<li>
+				<NavLink to="/admin_cadastro" activeClassName="active-link">
+						Cadastrar Admin
+					</NavLink>
+				</li>
 			</ul>
             <Dark_Mode />
 		</nav>

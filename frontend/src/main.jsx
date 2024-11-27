@@ -2,9 +2,12 @@ import ReactDOM from "react-dom/client";
 import { BrowserRouter, RouterProvider, createBrowserRouter } from "react-router-dom";
 import App from "./App";
 import User_Start from "./pages/User_Start";
+import User_Cadastrar_Task from "./components/User_Cadastrar_Task";
 import Admin_Start from "./pages/Admin_Start";
+import Admin_Cadastro from "./pages/Admin_Cadastro";
 import Admin_Visualizar_User from "./components/Admin_Visualizar_User";
 import Admin_Visualizar_Tasks from "./components/Admin_Visualizar_Tasks";
+
 import "./index.css";
 
 const router = createBrowserRouter([
@@ -21,8 +24,8 @@ const router = createBrowserRouter([
         element: <Admin_Start />,
     },
 	{
-		path: "/cadastrar-task",
-		element: "<Tarefas />"
+		path: "/user_cadastrar_task",
+		element: <User_Cadastrar_Task />,
 	},
 	{
 		path: "/admin_visualizar_user",
@@ -31,7 +34,11 @@ const router = createBrowserRouter([
 	{
 		path: "/admin_visualizar_task",
 		element: <Admin_Visualizar_Tasks />
-	}
+	},
+    {
+        path: "/admin_cadastro",
+        element: <Admin_Cadastro />
+    }
 ]);
 
 ReactDOM.createRoot(document.getElementById("root")).render(

@@ -13,7 +13,7 @@ export default function User_Navbar() {
 					</NavLink>
 				</li>
                 <li>
-                    <NavLink to="/user-cadastrar-task" className={({ isActive }) => (isActive ? "active-link" : "")}>
+                    <NavLink to="/user_cadastrar_task" className={({ isActive }) => (isActive ? "active-link" : "")}>
                         Cadastrar Tarefa
                     </NavLink>
                 </li>

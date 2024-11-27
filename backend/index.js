@@ -57,6 +57,7 @@ app.post("/esqueci-minha-senha", (req, res) => {
     });
 });
 
+// POST LOGIN
 app.post("/login", (req, res) => {
     const { email, senha } = req.body;
 
@@ -86,13 +87,14 @@ app.post("/login", (req, res) => {
     });
 });
 
-app.post("/cadastrar_user", async (req, res) => {
+// POST USER
+app.post("/cadastrar_user",(req, res) => {
     const { nome, sobrenome, email, senha, organizacao } = req.body;
 
     try {
         const senhaCriptografada = CryptoJS.AES.encrypt(senha, "chaveSecreta").toString();
 
-        await db.query(
+         db.query(
             `INSERT INTO usuarios (nome, sobrenome, email, senha, organizacao, tipo) VALUES (?, ?, ?, ?, ?, 'usuario')`,
             [nome, sobrenome, email, senhaCriptografada, organizacao]
         );
@@ -103,7 +105,6 @@ app.post("/cadastrar_user", async (req, res) => {
         res.status(500).send("Erro ao criar usuário");
     }
 });
-
 
 // POST ADMIN
 app.post('/cadastrar_admin',(req, res) => {
@@ -134,27 +135,27 @@ app.post('/cadastrar_admin',(req, res) => {
 });
 
 // POST TASK
-app.post('/cadastrar_task',(req, res) => {
-    const {titulo, descricao, status, prazo, id_usuario} = req.body;
-    try{
+app.post('/cadastrar_task', (req, res) => {
+    const { titulo, descricao, status, prazo, id_usuario } = req.body;
+
+    try {
         db.query(
             `INSERT INTO tarefas (id_usuario, titulo, descricao, status, prazo) VALUES (?, ?, ?, ?, ?)`,
             [id_usuario, titulo, descricao, status, prazo],
             function (err, results, fields) {
                 if (err) {
-                console.error('Erro na inserção:', err);
-                    return;
-                    }
-                    console.log(results);
-                    console.log(fields);
+                    console.error('Erro na inserção:', err);
+                    return res.status(500).send('Erro ao criar tarefa: ' + err.message);
                 }
-            );
-            res.status(201).send('Tarefa criada com sucesso!');
-            
-        } catch (err) {
-            res.status(500).send('Erro ao criar tarefa: ' + err.message);
+                console.log(results);
+                res.status(201).send('Tarefa criada com sucesso!');
             }
+        );
+    } catch (err) {
+        res.status(500).send('Erro ao criar tarefa: ' + err.message);
+    }
 });
+
 
 // GET ALL ADMINS
 app.get('/visualizar_admins', async (req, res) => {

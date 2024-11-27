@@ -132,7 +132,12 @@ textarea
 	font-size: 1rem;
 }
 
-textarea 
+.form-task
+{
+	width: 100%;
+}
+
+.text-area
 {
 	height: 100px;
 	resize: none;
