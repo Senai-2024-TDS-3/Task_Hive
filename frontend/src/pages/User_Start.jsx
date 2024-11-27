@@ -10,13 +10,17 @@ export default function User_Start() {
     return (
         <div>
              {/* <Admin_NavBar/> */}
-            {/* <User_Navbar /> */}
+            <User_Navbar />
            {/* <User_Gerenciar_Task/> */}
 
             {/* <Cadastrar_User/>  */}
            {/* <Form_Cadastro_User/> */}
            {/* <Hive_Card_Login/>  */}
+<<<<<<< HEAD
         < Hive_Layout_Users/>
+=======
+           < Hive_Layout_Users/>
+>>>>>>> 3ce2a8776aa6833ce22bfc61085994f75b110c67
 
         / <Hive_Layout_Users/>
 
