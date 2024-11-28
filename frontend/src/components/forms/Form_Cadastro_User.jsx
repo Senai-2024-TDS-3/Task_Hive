@@ -27,7 +27,7 @@ export default function Form_Cadastro_User({ onSubmit, onVoltarLogin }) {
     };
 
     return (
-        <div className="flex justify-center items-center mt-20 h-full">
+        <div className="flex justify-center items-center mt-0 h-full">
             <div className="bg-[#F0A500] p-6 shadow-md w-96 rounded-none">
                 <form onSubmit={handleSubmit}>
                     <div className="grid grid-cols-2 gap-4">

@@ -1,5 +1,5 @@
-import Hex_Cell_User from "./Hex_Cell_User"
-import Hive_Card_User from "./Hive_card_User"
+import Hex_Cell_User from "../Hex_Cell_User"
+import Hive_Card_User from "../Hive_card_User"
 
 export default function Hive_Layout_Users() {
     return (

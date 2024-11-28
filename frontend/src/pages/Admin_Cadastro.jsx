@@ -1,5 +1,5 @@
-import Admin_Navbar from "../components/Admin_Navbar"
-import Cadastrar_Admin from "../components/Cadastrar_Admin"
+import Admin_Navbar from "../components/admin/Admin_Navbar"
+import Cadastrar_Admin from "../components/admin/Cadastrar_Admin"
 
 export default function Cadastro_Admin() {
     return (

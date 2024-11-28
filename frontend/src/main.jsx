@@ -2,11 +2,11 @@ import ReactDOM from "react-dom/client";
 import { BrowserRouter, RouterProvider, createBrowserRouter } from "react-router-dom";
 import App from "./App";
 import User_Start from "./pages/User_Start";
-import User_Cadastrar_Task from "./components/User_Cadastrar_Task";
+import User_Cadastrar_Task from "./components/user/User_Cadastrar_Task";
 import Admin_Start from "./pages/Admin_Start";
 import Admin_Cadastro from "./pages/Admin_Cadastro";
-import Admin_Visualizar_User from "./components/Admin_Visualizar_User";
-import Admin_Visualizar_Tasks from "./components/Admin_Visualizar_Tasks";
+import Admin_Visualizar_User from "./components/admin/Admin_Visualizar_User";
+import Admin_Visualizar_Tasks from "./components/admin/Admin_Visualizar_Tasks";
 
 import "./index.css";
 

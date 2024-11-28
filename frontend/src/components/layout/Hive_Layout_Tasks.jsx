@@ -1,4 +1,4 @@
-import Hex_Teste from "./Hex_Teste"
+import Hex_Teste from "../Hex_Teste"
 
 
 export default function Hive_Layout_Tasks() {
