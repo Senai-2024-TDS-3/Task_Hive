@@ -76,6 +76,11 @@ body
 	text-decoration: underline;
 }
 
+.active-link-logout
+{
+	/* font-weight: bold; */
+	text-decoration: underline;
+}
 img 
 {
 	width: 5%;

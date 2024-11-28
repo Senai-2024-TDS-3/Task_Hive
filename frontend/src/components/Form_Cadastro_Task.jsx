@@ -9,15 +9,14 @@ export default function Form_Cadastro_Task() {
     const [idUsuario, setIdUsuario] = useState(null); // O id do usuário será carregado aqui
 
     useEffect(() => {
-        // Recuperar o id_usuario do localStorage quando o componente for montado
         const usuarioId = localStorage.getItem("id_usuario");
         if (usuarioId) {
-            setIdUsuario(usuarioId);  // Definir o id_usuario do estado
+            setIdUsuario(usuarioId);
         } else {
-            // Caso o id_usuario não esteja no localStorage (talvez o usuário não tenha feito login)
-            alert("Usuário não autenticado.");
+            alert("Usuário não autenticado. Faça login novamente.");
         }
-    }, []); // Esse efeito roda apenas uma vez quando o componente é montado
+    }, []);
+    // Esse efeito roda apenas uma vez quando o componente é montado
 
     const handleSubmit = async (e) => {
         e.preventDefault();

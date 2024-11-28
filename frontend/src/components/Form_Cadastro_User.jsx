@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-export default function Form_Cadastro_User({ onSubmit }) {
+export default function Form_Cadastro_User({ onSubmit, onVoltarLogin }) {
     const [formData, setFormData] = useState({
         nome: "",
         sobrenome: "",
@@ -106,6 +106,14 @@ export default function Form_Cadastro_User({ onSubmit }) {
                             className="mt-4 w-full bg-black text-white text-weigt font-bold py-2 rounded-none hover:bg-[#CF7500] transition">
                             Deletar
                         </button>
+                   
+                    <button
+                        type="button"
+                        onClick={onVoltarLogin} // Chamando a função onGoBack quando o botão for clicado
+                        className="mt-4 w-full bg-black text-white font-bold py-2 rounded-none hover:bg-[#CF7500] transition"
+                    >
+                        Voltar
+                    </button>
                 </form>
             </div>
         </div>

@@ -14,14 +14,16 @@ app.listen(port, () => {
     console.log(`Servidor rodando em http://localhost:${port}`);
 });
 
+// CONST NODEMAILER PARA ENVIAR O TOKEN DE REDEFINIÇÃO DE SENHA
 const transporter = nodemailer.createTransport({
     service: "gmail",
     auth: {
-        user: "seu-email@gmail.com",
-        pass: "sua-senha",
+        user: "seu-email@gmail.com", // depois adicionar o email da werewolf
+        pass: "sua-senha", // aqui colocar a senha de aplicativo da werewolf
     },
 });
 
+// POST ESQUECI MINHA SENHA
 app.post("/esqueci-minha-senha", (req, res) => {
     const { email } = req.body;
 
@@ -40,7 +42,7 @@ app.post("/esqueci-minha-senha", (req, res) => {
 
         transporter.sendMail(
             {
-                from: "seu-email@gmail.com",
+                from: "seu-email@gmail.com", // werewolf
                 to: email,
                 subject: "Redefinição de senha",
                 html: `<p>Clique no link para redefinir sua senha: <a href="${resetLink}">${resetLink}</a></p>`,
@@ -79,14 +81,14 @@ app.post("/login", (req, res) => {
             return res.status(401).send("Senha incorreta!");
         }
 
-        // Login bem-sucedido
+        // Retornar o id_usuario junto com a resposta
         res.status(200).json({
             message: "Login bem-sucedido!",
             redirect: usuario.tipo === "admin" ? "Admin_Start" : "User_Start",
+            id_usuario: usuario.id, // Enviando o ID do usuário
         });
     });
 });
-
 // POST USER
 app.post("/cadastrar_user",(req, res) => {
     const { nome, sobrenome, email, senha, organizacao } = req.body;
@@ -134,53 +136,26 @@ app.post('/cadastrar_admin',(req, res) => {
     }
 });
 
-<<<<<<< HEAD
-    // POST TASK
-    app.post('/cadastrar_task',(req, res) => {
-        const {titulo, descricao, status, prazo, id_usuario} = req.body;
-        try{
-            db.query(
-                `INSERT INTO tarefas (id_usuario, titulo, descricao, status, prazo) VALUES (?, ?, ?, ?, ?)`,
-                [id_usuario, titulo, descricao, status, prazo],
-                function (err, results, fields) {
-                    if (err) {
-                    console.error('Erro na inserção:', err);
-                        return;
-                        }
-                        console.log(results);
-                        console.log(fields);
-                    }
-                );
-                res.status(201).send('Tarefa criada com sucesso!');
-                
-            } catch (err) {
-                res.status(500).send('Erro ao criar tarefa: ' + err.message);
-                }
-    });
-=======
 // POST TASK
 app.post('/cadastrar_task', (req, res) => {
     const { titulo, descricao, status, prazo, id_usuario } = req.body;
 
-    try {
-        db.query(
-            `INSERT INTO tarefas (id_usuario, titulo, descricao, status, prazo) VALUES (?, ?, ?, ?, ?)`,
-            [id_usuario, titulo, descricao, status, prazo],
-            function (err, results, fields) {
-                if (err) {
-                    console.error('Erro na inserção:', err);
-                    return res.status(500).send('Erro ao criar tarefa: ' + err.message);
-                }
-                console.log(results);
-                res.status(201).send('Tarefa criada com sucesso!');
-            }
-        );
-    } catch (err) {
-        res.status(500).send('Erro ao criar tarefa: ' + err.message);
+    if (!id_usuario) {
+        return res.status(400).send('Usuário não autenticado.');
     }
-});
->>>>>>> 3ce2a8776aa6833ce22bfc61085994f75b110c67
 
+    db.query(
+        `INSERT INTO tarefas (id_usuario, titulo, descricao, status, prazo) VALUES (?, ?, ?, ?, ?)`,
+        [id_usuario, titulo, descricao, status, prazo],
+        (err, results) => {
+            if (err) {
+                console.error('Erro na inserção:', err);
+                return res.status(500).send('Erro ao criar tarefa.');
+            }
+            res.status(201).send('Tarefa criada com sucesso!');
+        }
+    );
+});
 
 // GET ALL ADMINS
 app.get('/visualizar_admins', async (req, res) => {
