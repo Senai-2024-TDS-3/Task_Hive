@@ -18,8 +18,8 @@ app.listen(port, () => {
 const transporter = nodemailer.createTransport({
     service: "gmail",
     auth: {
-        user: "seu-email@gmail.com", // depois adicionar o email da werewolf
-        pass: "sua-senha", // aqui colocar a senha de aplicativo da werewolf
+        user: "taskhivebr@gmail.com", 
+        pass: "Abelha666",
     },
 });
 
@@ -42,7 +42,7 @@ app.post("/esqueci-minha-senha", (req, res) => {
 
         transporter.sendMail(
             {
-                from: "seu-email@gmail.com", // werewolf
+                from: "taskhivebr@gmail.com",
                 to: email,
                 subject: "Redefinição de senha",
                 html: `<p>Clique no link para redefinir sua senha: <a href="${resetLink}">${resetLink}</a></p>`,
