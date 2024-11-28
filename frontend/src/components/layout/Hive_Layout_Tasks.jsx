@@ -6,7 +6,7 @@ export default function Hive_Layout_Tasks() {
         <>
             <div className="Hex_Layout_Tasks">
                 {/* NUMERO MÁXIMO = 7 */}
-                <div className="layout_left">
+                <div id="divtask" >
                     <Hex_Teste />
                     <Hex_Teste />
                     <Hex_Teste />
@@ -15,15 +15,7 @@ export default function Hive_Layout_Tasks() {
                     <Hex_Teste />
                     <Hex_Teste />
                 </div>
-                <div className="layout_right">
-                    <Hex_Teste />
-                    <Hex_Teste />
-                    <Hex_Teste />
-                    <Hex_Teste />
-                    <Hex_Teste />
-                    <Hex_Teste />
-                    <Hex_Teste />
-                </div>
+                
             </div>
         </>
     )

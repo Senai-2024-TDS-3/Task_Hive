@@ -3,9 +3,8 @@ import axios from 'axios';
 
 export default function Hex_Cell_Task() {
     const [tasks, setTasks] = useState([]);
-    const [limite, setLimites] = useState();
-
-    const MaxLeft = 7;
+    const [classe, setClasse] = useState("layout_left");
+    const [idx, setIdx] = useState(0)
 
     useEffect(() => {
         const fetchtask = async () => {
@@ -19,25 +18,44 @@ export default function Hex_Cell_Task() {
 
     }, []); // Passando o array vazio para o useEffect rodar apenas uma vez ao carregar o componente
 
-    const leftTasks = Array.isArray(tasks) ? tasks.slice(7, MaxLeft) : []; // Divide as tarefas para a parte esquerda
-    const rightTasks = Array.isArray(tasks) ? tasks.slice(MaxLeft) : []; // Divide as tarefas para a parte direita
+    
+    console.log(idx)
+
+    function alterValue(index) {
+        if (index % 7 === 0) {
+            console.log("7!!!!!!!!!!!!!!")
+            classe == "layout_left" ? setClasse('layout_right') : setClasse('layout_left')
+
+            return
+        }
+    }
 
     const ArrayDataItems = ({ items }) => {
 
         return items.map((tarefa, index) =>
             <>
-
-                    <div className="hex_wrapper " key={index}>
-                        
-                        <div className="hex_task">
-                            <div className="lista_task">
-                                {/* puxar o nome do usuário atraves do ID */}
-                                <span className="span_titulo">{tarefa.titulo}</span>
-                                <br />
-                                <span className="span_prazo">{tarefa.prazo}</span>
+                {
+                    setIdx(index += 1)
+                },
+                {
+                    alterValue(index)
+                }
+                <div className="Hex_Layout_Tasks" >
+                    {/* NUMERO MÁXIMO = 7 */}
+                    <div className={classe} >
+                        <div className="hex_wrapper " key={index}>
+                            <div className="hex_task">
+                                <div className="lista_task">
+                                    {/* puxar o nome do usuário atraves do ID */}
+                                    <span className="span_titulo">{tarefa.titulo}</span>
+                                    <br />
+                                    <span className="span_prazo">{tarefa.prazo}</span>
+                                </div>
                             </div>
                         </div>
                     </div>
+                </div>
+
             </>
         )
     }
