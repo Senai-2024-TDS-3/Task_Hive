@@ -6,7 +6,17 @@ const CryptoJS = require("crypto-js");
 const app = express();
 
 app.use(express.json());
+app.use((req, res, next) => {
+    console.log(`${req.method} ${req.url}`);
+    next();
+});
+
 app.use(cors({ origin: "*" }));
+// app.use(cors({
+//     origin: "http://localhost:5173", // Permitir requisições da porta 5173
+//     methods: ["GET", "POST"],
+//     allowedHeaders: ["Content-Type"],
+//   }));
 
 const port = 3001;
 
@@ -19,7 +29,7 @@ const transporter = nodemailer.createTransport({
     service: "gmail",
     auth: {
         user: "taskhivebr@gmail.com", 
-        pass: "Abelha666",
+        pass: "vjse brag ggvo baqx", // senha APP, não PERDER!!!
     },
 });
 
@@ -38,7 +48,9 @@ app.post("/esqueci-minha-senha", (req, res) => {
         }
 
         const token = CryptoJS.AES.encrypt(email, "chaveSecreta").toString();
-        const resetLink = `http://localhost:3000/redefinir-senha?token=${encodeURIComponent(token)}`;
+        const resetLink = `http://localhost:5173/redefinir-senha?token=${token}`;
+
+
 
         transporter.sendMail(
             {
@@ -57,6 +69,63 @@ app.post("/esqueci-minha-senha", (req, res) => {
             }
         );
     });
+});
+
+// POST REDEFINIR SENHA
+app.post("/redefinir-senha", (req, res) => {
+    const { token, senha } = req.body;
+
+    try {
+        // Decodificar o token para obter o email original
+        const email = CryptoJS.AES.decrypt(token, "chaveSecreta").toString(CryptoJS.enc.Utf8);
+
+        if (!email) {
+            return res.status(400).send("Token inválido ou expirado.");
+        }
+
+        // Criptografar a nova senha antes de salvar no banco
+        const senhaCriptografada = CryptoJS.AES.encrypt(senha, "chaveSecreta").toString();
+
+        // Atualizar a senha do usuário com base no email decodificado
+        db.query(
+            `UPDATE usuarios SET senha = ? WHERE email = ?`, // Aqui usamos 'email' para buscar o usuário
+            [senhaCriptografada, email], // Passamos a senha criptografada e o email decodificado
+            (err, result) => {
+                if (err) {
+                    console.error("Erro ao atualizar senha:", err);
+                    return res.status(500).send("Erro ao atualizar senha");
+                }
+
+                if (result.affectedRows === 0) {
+                    return res.status(404).send("Usuário não encontrado.");
+                }
+
+                res.status(200).send({ message: "Senha atualizada com sucesso!" });
+            }
+        );
+    } catch (err) {
+        console.error("Erro ao redefinir senha:", err);
+        res.status(500).send("Erro ao redefinir senha");
+    }
+});
+
+// GET VALIDAR TOKEN
+app.get("/validar-token", (req, res) => {
+    const { token } = req.query;
+
+    try {
+        const email = CryptoJS.AES.decrypt(token, "chaveSecreta").toString(CryptoJS.enc.Utf8);
+
+        if (!email) {
+            return res.status(400).send("Token inválido ou expirado.");
+        }
+
+        // Retorne uma resposta positiva ou envie os dados necessários para o frontend.
+        res.status(200).send({ email });
+    } catch (err) {
+        console.error("Erro ao decodificar o token:", err);
+        res.status(500).send("Erro ao validar o token.");
+    }
 });
 
 // POST LOGIN
@@ -89,6 +158,7 @@ app.post("/login", (req, res) => {
         });
     });
 });
+
 // POST USER
 app.post("/cadastrar_user",(req, res) => {
     const { nome, sobrenome, email, senha, organizacao } = req.body;

@@ -6,8 +6,8 @@ export default function Home() {
     return (
         <>
             <Header />
-            {/* <Hive_Card_Login /> */}
-            <Hex_Cell_Task/>
+            <Hive_Card_Login />
+            {/* <Hex_Cell_Task/> */}
         </>
     )
 }

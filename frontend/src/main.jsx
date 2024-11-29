@@ -3,12 +3,13 @@ import { BrowserRouter, RouterProvider, createBrowserRouter } from "react-router
 import App from "./App";
 import User_Start from "./pages/User_Start";
 import User_Cadastrar_Task from "./components/user/User_Cadastrar_Task";
+import Redefinir_Senha from "./pages/Redefinir_Senha";
 import Admin_Start from "./pages/Admin_Start";
 import Admin_Cadastro from "./pages/Admin_Cadastro";
 import Admin_Visualizar_User from "./components/admin/Admin_Visualizar_User";
 import Admin_Visualizar_Tasks from "./components/admin/Admin_Visualizar_Tasks";
-
 import "./index.css";
+
 
 const router = createBrowserRouter([
     {
@@ -38,6 +39,10 @@ const router = createBrowserRouter([
     {
         path: "/admin_cadastro",
         element: <Admin_Cadastro />
+    },
+    {
+        path: "/redefinir-senha",
+        element: <Redefinir_Senha />
     }
 ]);
 
