@@ -9,40 +9,49 @@ export default function Redefinir_Senha() {
     const navigate = useNavigate();
 
     useEffect(() => {
+        // Recupera o token da URL
         const urlToken = new URLSearchParams(window.location.search).get("token");
         if (!urlToken) {
-            navigate("/"); // Redireciona para a página inicial caso não tenha token
+            navigate("/"); // Redireciona para a página inicial se não houver token
         } else {
-            setToken(urlToken);
+            setToken(decodeURIComponent(urlToken)); // Decodifica o token caso tenha caracteres especiais
         }
     }, [navigate]);
 
     const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (!token) return;
+        e.preventDefault();
+        if (!token) {
+            alert("Token ausente ou inválido.");
+            return;
+        }
+        // Lógica para a senha ter mais de 8 caracteres
+        if (!senha || senha.length < 8) {
+            alert("A senha deve ter pelo menos 8 caracteres.");
+            return;
+        }
 
-    try {
-        const response = await axios.post("http://localhost:3001/redefinir-senha", {
-            token,
-            senha,
-        });
+        try {
+            const response = await axios.post("http://localhost:3001/redefinir-senha", {
+                token,
+                senha,
+            });
 
-        // Exibe uma resposta detalhada, caso seja um objeto
-        alert(response.data.message || "Senha atualizada com sucesso!");
-    } catch (err) {
-        console.error(err);
-        const errorMessage = err.response?.data || "Erro ao redefinir senha.";
-        alert(errorMessage);
-    }
-};
-
+            alert(response.data.message || "Senha atualizada com sucesso!");
+            navigate("/"); // Redireciona para a página de login após sucesso
+        } catch (err) {
+            console.error("Erro ao redefinir senha:", err);
+            const errorMessage = err.response?.data || "Erro ao redefinir senha.";
+            alert(errorMessage);
+        }
+    };
 
     return (
         <>
             <Header />
-            <div className="flex justify-center items-center h-screen">
-                <div className="bg-[#F0A500] p-6 w-96">
+            <div className="flex justify-center items-center h-80">
+                <div className="bg-[#F0A500] p-6 w-96 mt-96">
                     <h1 className="text-black text-xl font-bold mb-4 text-center">Redefinir Senha</h1>
+                    {/* Formulário para redefinir a senha */}
                     <form onSubmit={handleSubmit} className="flex flex-col">
                         <label className="block text-black mb-2">Nova Senha:</label>
                         <input
@@ -58,13 +67,12 @@ export default function Redefinir_Senha() {
                         >
                             Redefinir
                         </button>
-                        <a
-                            href="/"
-                            className="mt-4 w-full bg-black text-white text-weigt font-bold py-2 rounded-none hover:bg-[#CF7500] transition"
-                        >
-                            Voltar
-                        </a>
                     </form>
+                    <a href="/">
+                    <button className="mt-4 align- w-full bg-black text-white text-weigt font-bold py-2 rounded-none hover:bg-[#CF7500] transition">
+                        Voltar
+                    </button>
+                    </a>
                 </div>
             </div>
         </>

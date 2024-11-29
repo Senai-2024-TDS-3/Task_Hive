@@ -48,7 +48,8 @@ app.post("/esqueci-minha-senha", (req, res) => {
         }
 
         const token = CryptoJS.AES.encrypt(email, "chaveSecreta").toString();
-        const resetLink = `http://localhost:5173/redefinir-senha?token=${token}`;
+        const resetLink = `http://localhost:5173/redefinir-senha?token=${encodeURIComponent(token)}`;
+
 
 
 
@@ -365,3 +366,21 @@ app.delete('/delete_user/:id/tasks/:idTask',(req, res) => {
         res.status(500).send('Erro ao deletar tarefa: ' + err.message);
     }
 });
+
+// DELETE USER
+app.delete('/deletar_user/:id', async (req, res) => {
+    const { id } = req.params;
+    try {
+        const [result] = await db.promise().query(`DELETE FROM usuarios WHERE id = ? AND tipo = 'usuario'`, [id]);
+
+        if (result.affectedRows === 0) {
+            return res.status(404).send('Usuário não encontrado ou não pode ser deletado.');
+        }
+
+        res.status(200).send('Usuário deletado com sucesso!');
+    } catch (err) {
+        console.error('Erro ao deletar usuário:', err.message);
+        res.status(500).send('Erro ao deletar usuário: ' + err.message);
+    }
+});
+

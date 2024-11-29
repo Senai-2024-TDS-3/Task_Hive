@@ -43,7 +43,8 @@ const router = createBrowserRouter([
     {
         path: "/redefinir-senha",
         element: <Redefinir_Senha />
-    }
+    },
+    
 ]);
 
 ReactDOM.createRoot(document.getElementById("root")).render(
