@@ -6,7 +6,7 @@ import User_Start from "./User_Start"
 export default function Teste(){
     return( 
             <>
-                <Hex_Cell_Task />
+                <Admin_Visualizar_Tasks />
             </>
     )
 }
