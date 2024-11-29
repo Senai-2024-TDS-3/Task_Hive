@@ -15,7 +15,6 @@ export default function Hive_Layout_Tasks() {
                     <Hex_Teste />
                     <Hex_Teste />
                 </div>
-                
             </div>
         </>
     )

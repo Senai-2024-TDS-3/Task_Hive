@@ -165,7 +165,8 @@ textarea
 	
 }
 
-.Hex_Layout_Tasks
+.Hex_Layout_Tasks,
+.Hex_Layout_User
 {
 	display: flex;
 	flex-direction: row;
