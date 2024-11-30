@@ -12,7 +12,8 @@ function App() {
 		<>
 			{/* <Admin_Visualizar_Tasks /> */}
 			{/* <Hex_Cell_Task/> */}
-			<User_Visualizar_User/>
+			{/* <User_Visualizar_User/> */}
+			<Home />
 		</>
 	)
 }
