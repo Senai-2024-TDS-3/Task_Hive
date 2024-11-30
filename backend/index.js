@@ -315,7 +315,7 @@ app.get('/visualizar_all_tasks/:id', async(req, res) => {
 });
 
 // PUT TASK
-app.put('/update_task/:id', (req, res) => {
+app.put('/update_task/:id', async (req, res) => {
     const { id } = req.params;
     const { titulo, descricao, status, prazo } = req.body;
 
@@ -323,7 +323,7 @@ app.put('/update_task/:id', (req, res) => {
         // Extrair somente a data (YYYY-MM-DD) do prazo
         const prazoFormatado = prazo.split('T')[0]; // Remove a parte de tempo, ficando só com a data
 
-        db.query(
+       await db.query(
             `UPDATE tarefas SET titulo = ?, descricao = ?, status = ?, prazo = ? WHERE id = ?`,
             [titulo, descricao, status, prazoFormatado, id],
             (err, results) => {
@@ -344,7 +344,6 @@ app.put('/update_task/:id', (req, res) => {
 
 // GET USER
 app.get('/visualizar_user/', async (req, res) => {
-    
     
     try {
         // Realiza a consulta assíncrona
@@ -367,15 +366,19 @@ app.get('/visualizar_user/:id/tasks', async (req, res) => {
     const { id } = req.params;
     
     try {
-        // Realiza a consulta assíncrona para buscar as tarefas do usuário com id específico
+        // Realiza a consulta para buscar as tarefas do usuário
         const [tarefas] = await db.promise().query(`SELECT * FROM tarefas WHERE id_usuario = ?`, [id]);
         
-        // Verifica se encontrou tarefas
+        // Certifica-se de que 'tarefas' sempre será um array, mesmo que esteja vazio
+        if (!Array.isArray(tarefas)) {
+            return res.status(500).json({ message: 'Erro ao processar tarefas.' });
+        }
+        
         if (tarefas.length === 0) {
             return res.status(404).json({ message: `Nenhuma tarefa encontrada para o usuário com ID ${id}` });
         }
 
-        // Retorna as tarefas encontradas
+        // Retorna as tarefas como um array
         res.status(200).json(tarefas);
     } catch (err) {
         console.error('Erro ao buscar tarefas do usuário:', err.message);
@@ -399,24 +402,24 @@ app.put('/update_user/:id/tasks/:idTask',(req, res) => {
     }
 });
 
-// DELETE USER TASK
-app.delete('/delete_user/:id/tasks/:idTask',(req, res) => {
-    const { id, idTask } = req.params;
-    try {
-        const [result] = db.query(
-            `DELETE FROM tarefas WHERE id = ? AND id_usuario = ?`,
-            [idTask, id]
-        );
-
-        if (result.affectedRows === 0) {
-            return res.status(404).send('Tarefa não encontrada ou não pertence a este usuário.');
-        }
-
-        res.status(200).send('Tarefa deletada com sucesso!');
-    } catch (err) {
-        res.status(500).send('Erro ao deletar tarefa: ' + err.message);
+app.delete('/delete_user/:userId/tasks/:taskId', (req, res) => {
+    const { userId, taskId } = req.params;
+    
+    if (!userId || !taskId) {
+      return res.status(400).send('ID do usuário ou da tarefa inválido.');
     }
-});
+  
+    // Agora, execute a query de forma segura
+    const query = 'DELETE FROM tarefas WHERE id = ? AND id_usuario = ?';
+    connection.query(query, [taskId, userId], (err, results) => {
+      if (err) {
+        return res.status(500).send('Erro ao deletar tarefa: ' + err.message);
+      }
+      res.send('Tarefa deletada com sucesso!');
+    });
+  });
+  
+
 
 // DELETE USER
 app.delete('/deletar_user/:id', async (req, res) => {

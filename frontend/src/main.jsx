@@ -3,6 +3,8 @@ import { BrowserRouter, RouterProvider, createBrowserRouter } from "react-router
 import App from "./App";
 import User_Start from "./pages/User_Start";
 import User_Cadastrar_Task from "./components/user/User_Cadastrar_Task";
+import User_Visualizar_Tasks from "./components/user/User_Visualizar_Tasks";
+import User_Gerenciar_Task from "./components/user/User_Gerenciar_Task";
 import Redefinir_Senha from "./pages/Redefinir_Senha";
 import Admin_Start from "./pages/Admin_Start";
 import Admin_Cadastro from "./pages/Admin_Cadastro";
@@ -29,6 +31,14 @@ const router = createBrowserRouter([
 		path: "/user_cadastrar_task",
 		element: <User_Cadastrar_Task />,
 	},
+    {
+        path: "/user_visualizar_task",
+        element: <User_Visualizar_Tasks />
+    },
+    {
+        path: "/user_visualizar_task/:id", // Rota com parâmetro dinâmico
+        element: <User_Gerenciar_Task /> // Componente que usa o ID
+    },
     
 	{
 		path: "/admin_visualizar_user",

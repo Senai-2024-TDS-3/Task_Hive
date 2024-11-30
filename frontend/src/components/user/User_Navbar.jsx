@@ -15,7 +15,7 @@ export default function User_Navbar() {
             <img src={Logo} alt="Logo" />
             <ul>
                 <li>
-                    <NavLink to="/user_visualizar_tasks" activeClassName="active-link">
+                    <NavLink to="/user_visualizar_task" activeClassName="active-link">
                         Visualizar Tarefas
                     </NavLink>
                 </li>
