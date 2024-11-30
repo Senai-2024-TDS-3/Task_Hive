@@ -214,7 +214,6 @@ app.post('/cadastrar_task', (req, res) => {
     if (!id_usuario) {
         return res.status(400).send('Usuário não autenticado.');
     }
-
     db.query(
         `INSERT INTO tarefas (id_usuario, titulo, descricao, status, prazo) VALUES (?, ?, ?, ?, ?)`,
         [id_usuario, titulo, descricao, status, prazo],
@@ -258,39 +257,90 @@ app.delete('/deletar_admin/:id',(req, res) => {
     }
 });
 
-// GET ALL TASKS
-    app.get('/visualizar_all_tasks', async (req, res) => {
-        try {
-            // Realiza a consulta assíncrona para buscar todas as tarefas
-            const [tarefas] = await db.promise().query(`SELECT * FROM tarefas`);
-            
-            // Verifica se encontrou tarefas
-            if (tarefas.length === 0) {
-                return res.status(404).json({ message: 'Nenhuma tarefa encontrada' });
-            }
+// Exemplo de como formatar a data para dd/mm/aaaa no backend (Express)
+function formatDate(date) {
+    const d = new Date(date);
+    const day = d.getDate().toString().padStart(2, '0'); // Garantir que o dia tenha 2 dígitos
+    const month = (d.getMonth() + 1).toString().padStart(2, '0'); // Meses começam do zero, então somamos 1
+    const year = d.getFullYear();
 
-        // Retorna todas as tarefas encontradas
-        res.status(200).json(tarefas);
+    return `${day}/${month}/${year}`;
+}
+
+// No momento de retornar as tarefas, use o formatDate para formatar o prazo
+// GET TAREFAS
+app.get('/visualizar_all_tasks', async (req, res) => {
+    try {
+        const [tarefas] = await db.promise().query(`SELECT * FROM tarefas`);
+        
+        // Formatar a data do prazo antes de enviar para o cliente
+        const tarefasComPrazoFormatado = tarefas.map(tarefa => {
+            return {
+                ...tarefa,
+                prazo: formatDate(tarefa.prazo)
+            };
+        });
+
+        if (tarefasComPrazoFormatado.length === 0) {
+            return res.status(404).json({ message: 'Nenhuma tarefa encontrada' });
+        }
+
+        res.status(200).json(tarefasComPrazoFormatado);
     } catch (err) {
         console.error('Erro ao buscar tarefas:', err.message);
         res.status(500).send('Erro ao buscar tarefas: ' + err.message);
     }
 });
 
-// PUT TASK
-app.put('/update_task/:id',(req, res) => {
+// GET TASK BY ID
+app.get('/visualizar_all_tasks/:id', async(req, res) => {
     const { id } = req.params;
-    const { titulo, descricao, status, prazo } = req.body;
+
     try {
-        db.query(
-            `UPDATE tarefas SET titulo = ?, descricao = ?, status = ?, prazo = ? WHERE id = ?`,
-            [titulo, descricao, status, prazo, id]
-        );
-        res.status(200).send('Tarefa atualizada com sucesso!');
+        const [tarefa] = await db.promise().query(`
+            SELECT tarefas.*, usuarios.nome, usuarios.sobrenome
+            FROM tarefas
+            JOIN usuarios ON tarefas.id_usuario = usuarios.id
+            WHERE tarefas.id = ?`, [id]);
+
+        if (!tarefa.length) {
+            return res.status(404).json({ message: 'Tarefa não encontrada' });
+        }
+
+        res.status(200).json(tarefa[0]);
     } catch (err) {
-        res.status(500).send('Erro ao atualizar tarefa: ' + err.message);
+        console.error('Erro ao buscar tarefa:', err.message);
+        res.status(500).send('Erro ao buscar tarefa: ' + err.message);
     }
 });
+
+// PUT TASK
+app.put('/update_task/:id', (req, res) => {
+    const { id } = req.params;
+    const { titulo, descricao, status, prazo } = req.body;
+
+    try {
+        // Extrair somente a data (YYYY-MM-DD) do prazo
+        const prazoFormatado = prazo.split('T')[0]; // Remove a parte de tempo, ficando só com a data
+
+        db.query(
+            `UPDATE tarefas SET titulo = ?, descricao = ?, status = ?, prazo = ? WHERE id = ?`,
+            [titulo, descricao, status, prazoFormatado, id],
+            (err, results) => {
+                if (err) {
+                    console.error('Erro ao atualizar tarefa:', err);
+                    return res.status(500).send('Erro ao atualizar tarefa.');
+                }
+
+                res.status(200).send('Tarefa atualizada com sucesso!');
+            }
+        );
+    } catch (err) {
+        console.error('Erro ao processar atualização:', err);
+        res.status(500).send('Erro ao atualizar tarefa.');
+    }
+});
+
 
 // GET USER
 app.get('/visualizar_user/', async (req, res) => {
@@ -332,6 +382,7 @@ app.get('/visualizar_user/:id/tasks', async (req, res) => {
         res.status(500).send('Erro ao buscar tarefas do usuário: ' + err.message);
     }
 });
+
 
 // PUT USER TASK
 app.put('/update_user/:id/tasks/:idTask',(req, res) => {

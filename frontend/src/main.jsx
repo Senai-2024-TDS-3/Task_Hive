@@ -8,6 +8,7 @@ import Admin_Start from "./pages/Admin_Start";
 import Admin_Cadastro from "./pages/Admin_Cadastro";
 import Admin_Visualizar_User from "./components/admin/Admin_Visualizar_User";
 import Admin_Visualizar_Tasks from "./components/admin/Admin_Visualizar_Tasks";
+import Admin_Gerenciar_Task from "./components/admin/Admin_Gerenciar_Task";
 import "./index.css";
 
 
@@ -28,6 +29,7 @@ const router = createBrowserRouter([
 		path: "/user_cadastrar_task",
 		element: <User_Cadastrar_Task />,
 	},
+    
 	{
 		path: "/admin_visualizar_user",
 		element: <Admin_Visualizar_User />,
@@ -36,6 +38,11 @@ const router = createBrowserRouter([
 		path: "/admin_visualizar_task",
 		element: <Admin_Visualizar_Tasks />
 	},
+    {
+        path: "/admin_visualizar_task/:id", // Rota com parâmetro dinâmico
+        element: <Admin_Gerenciar_Task /> // Componente que usa o ID
+    },
+    
     {
         path: "/admin_cadastro",
         element: <Admin_Cadastro />
