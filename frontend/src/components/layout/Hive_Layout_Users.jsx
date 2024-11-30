@@ -8,18 +8,13 @@ export default function Hive_Layout_Users() {
             <div className="Hex_Layout_User">
                 {/* NUMERO MÁXIMO = 7 */}
                 <div  id="divtask" >
-                   <Hex_Cell_User/>
-                   <Hex_Cell_User/>
-                   <Hex_Cell_User/>
-                   <Hex_Cell_User/>
-                   <Hex_Cell_User/>
-                   <Hex_Cell_User/>
-                   <Hex_Cell_User/>
-                   <Hex_Cell_User/>
-                   <Hex_Cell_User/>
-                   <Hex_Cell_User/>
-                   <Hex_Cell_User/>
-                   <Hex_Cell_User/>
+                  1 <Hex_Cell_User/>
+                  2 <Hex_Cell_User/>
+                   3 <Hex_Cell_User/>
+                   4 <Hex_Cell_User/>
+                  5  <Hex_Cell_User/>
+                  6  <Hex_Cell_User/>
+                 7  <Hex_Cell_User/>
                 </div>
             </div>
         </>

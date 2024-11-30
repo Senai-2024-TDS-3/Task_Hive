@@ -293,19 +293,19 @@ app.put('/update_task/:id',(req, res) => {
 });
 
 // GET USER
-app.get('/visualizar_user/:id', async (req, res) => {
-    const { id } = req.params;
+app.get('/visualizar_user/', async (req, res) => {
+    
     
     try {
         // Realiza a consulta assíncrona
-        const [usuarios] = await db.promise().query(`SELECT * FROM usuarios WHERE id = ? AND tipo = 'usuario'`, [id]);
+        const [usuario] = await db.promise().query(`SELECT * FROM usuarios `);
         
-        if (usuarios.length === 0) {
+        if (usuario.length === 0) {
             return res.status(404).json({ message: 'Usuário não encontrado' });
         }
 
         // Retorna o usuário encontrado
-        res.status(200).json(usuarios[0]); // Se quiser retornar o primeiro usuário, ou altere conforme necessário
+        res.status(200).json(usuario); // Se quiser retornar o primeiro usuário, ou altere conforme necessário
     } catch (err) {
         console.error('Erro ao buscar usuário:', err.message);
         res.status(500).send('Erro ao buscar usuário: ' + err.message);

@@ -6,10 +6,10 @@ export default function Hex_Cell_User() {
     useEffect(() => {
         const fetchuser = async () => {
             try {
-                const response = await fetch('http://localhost:3001/visualizar_user/:id'); // Substituído :id por 1 para teste
+                const response = await fetch('http://localhost:3001/visualizar_user/'); // Substituído :id por 1 para teste
                 const data = await response.json();
                 console.log(data);
-                setUsuario([data]); // Garante que os dados sejam armazenados como array
+                setUsuario(data); // Garante que os dados sejam armazenados como array
             } catch (error) {
                 console.error("Erro ao buscar usuários:", error);
             }
