@@ -199,7 +199,8 @@ textarea
 
 }
 
-.hex_teste
+.hex_teste,
+.hex_user
 {
 	display: flex;
 	flex-direction: column;
@@ -215,7 +216,8 @@ textarea
 	margin: 0.5%;
 }
 
-.hex_task
+.hex_task,
+.hex_user
 {
 	display: flex;
 	flex-direction: column;
@@ -250,11 +252,14 @@ textarea
 
 
 
-.lista_task{
+.lista_task,
+.lista_user
+{
 	font-size: 8px;
 }
 
-.hex_task:hover
+.hex_task:hover,
+.hex_user:hover
 {
 	background-color: #cf7500;
 }
