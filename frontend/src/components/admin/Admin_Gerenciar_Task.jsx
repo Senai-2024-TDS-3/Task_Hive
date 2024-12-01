@@ -12,22 +12,33 @@ export default function Admin_Gerenciar_Task() {
     useEffect(() => {
         axios.get(`http://localhost:3001/visualizar_all_tasks/${id}`)
             .then((res) => {
-                setTarefa(res.data);
-                setStatus(res.data.status);
+                const data = res.data;
+
+                // Formatar o prazo retornado do backend
+                if (data.prazo) {
+                    data.prazo = data.prazo.split("T")[0]; // Converter para 'YYYY-MM-DD'
+                }
+
+                setTarefa(data);
+                setStatus(data.status);
             })
-            .catch((err) => console.error(err));
+            .catch((err) => console.error("Erro ao buscar tarefa:", err));
     }, [id]);
 
     const handleUpdate = (e) => {
         e.preventDefault();
+
+        // Garantir que o prazo esteja no formato correto antes de enviar
+        const formattedPrazo = tarefa.prazo ? tarefa.prazo.split("T")[0] : null;
+
         axios.put(`http://localhost:3001/update_task/${id}`, {
             titulo: tarefa.titulo,
             descricao: tarefa.descricao,
             status: status,
-            prazo: tarefa.prazo
+            prazo: formattedPrazo // Enviar prazo formatado
         })
             .then(() => alert("Tarefa atualizada com sucesso!"))
-            .catch((err) => console.error(err));
+            .catch((err) => console.error("Erro ao atualizar tarefa:", err));
     };
 
     const handleDelete = () => {
@@ -37,7 +48,7 @@ export default function Admin_Gerenciar_Task() {
                     alert("Tarefa deletada com sucesso!");
                     navigate("/admin_dashboard"); // Redireciona para o painel admin
                 })
-                .catch((err) => console.error(err));
+                .catch((err) => console.error("Erro ao deletar tarefa:", err));
         }
     };
 

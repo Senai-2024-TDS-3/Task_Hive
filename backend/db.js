@@ -1,18 +1,22 @@
 const mysql = require('mysql2');
 
-// Criação da conexão com o banco de dados
-const connection = mysql.createConnection({
-  host: 'localhost',
-  user: 'root',
-  password: 'root',
-  database: 'TaskHive_DB'
+const db = mysql.createPool({
+    host: 'localhost',
+    user: 'root',
+    password: 'root',
+    database: 'TaskHive_DB',
+    waitForConnections: true,
+    connectionLimit: 10, // Número máximo de conexões no pool
+    queueLimit: 0,
 });
 
-// Verifique se a conexão foi bem-sucedida
-connection.connect((err) => {
-  if (err) {
-    console.error('Erro ao conectar ao banco de dados: ' + err.stack);
-    return;
-  }
-  console.log('Conectado ao banco de dados');
+db.getConnection((err, connection) => {
+    if (err) {
+        console.error("Erro ao conectar ao banco de dados:", err.message);
+    } else {
+        console.log("Conectado ao banco de dados");
+        connection.release();
+    }
 });
+
+module.exports = db;
