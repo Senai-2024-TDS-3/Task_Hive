@@ -31,6 +31,8 @@ export default function Hive_Card_Login() {
         } catch (err) {
             setError("Erro ao fazer login. Tente novamente.");
         }
+        console.log("Senha enviada para login:", senha);
+
     };
 
     // Const para exibir o card/form de cadastro de usuário

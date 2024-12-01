@@ -144,6 +144,7 @@ app.post("/login", (req, res) => {
         }
 
         const usuario = results[0];
+        // Descriptografar a senha armazenada no banco
         const bytes = CryptoJS.AES.decrypt(usuario.senha, "chaveSecreta");
         const senhaDescriptografada = bytes.toString(CryptoJS.enc.Utf8);
 
@@ -151,14 +152,18 @@ app.post("/login", (req, res) => {
             return res.status(401).send("Senha incorreta!");
         }
 
-        // Retornar o id_usuario junto com a resposta
+        // Se as senhas coincidirem, continue com o login
         res.status(200).json({
             message: "Login bem-sucedido!",
             redirect: usuario.tipo === "admin" ? "Admin_Start" : "User_Start",
             id_usuario: usuario.id, // Enviando o ID do usuário
         });
+        console.log("Senha fornecida:", senha);
+        console.log("Senha descriptografada:", senhaDescriptografada);
+
     });
 });
+
 
 // POST USER
 app.post("/cadastrar_user",(req, res) => {
@@ -466,34 +471,41 @@ app.delete('/delete_user/:id/tasks/:idTask',(req, res) => {
 });
 
 // PUT: Atualizar usuário
-app.put('/atualizar_user/:id', async (req, res) => {
+app.put("/atualizar_user/:id", (req, res) => {
+    const { nome, sobrenome, email, organizacao, senha } = req.body;
     const { id } = req.params;
-    const { nome, sobrenome, email, organizacao } = req.body;
 
-    try {
-        // Não atualizamos a senha, apenas os campos nome, sobrenome, email, e organizacao
-        const [result] = await db.promise().query(
-            `UPDATE usuarios SET nome = ?, sobrenome = ?, email = ?, organizacao = ? WHERE id = ?`,
-            [nome, sobrenome, email, organizacao, id]
-        );
+    let senhaCriptografada = null;
 
-        if (result.affectedRows === 0) {
-            return res.status(404).send('Usuário não encontrado.');
+    if (senha && senha.trim() !== "") {
+        senhaCriptografada = CryptoJS.AES.encrypt(senha, "chaveSecreta").toString();
+    }
+
+    const query = senhaCriptografada
+        ? `UPDATE usuarios SET nome = ?, sobrenome = ?, email = ?, organizacao = ?, senha = ? WHERE id = ?`
+        : `UPDATE usuarios SET nome = ?, sobrenome = ?, email = ?, organizacao = ? WHERE id = ?`;
+
+    const params = senhaCriptografada
+        ? [nome, sobrenome, email, organizacao, senhaCriptografada, id]
+        : [nome, sobrenome, email, organizacao, id];
+
+    db.query(query, params, (err, result) => {
+        if (err) {
+            console.error("Erro ao atualizar usuário:", err);
+            return res.status(500).send("Erro ao atualizar usuário");
         }
 
-        res.status(200).send('Usuário atualizado com sucesso!');
-    } catch (err) {
-        console.error('Erro ao atualizar usuário:', err.message);
-        res.status(500).send('Erro ao atualizar usuário: ' + err.message);
-    }
+        res.status(200).send({ message: "Usuário atualizado com sucesso!" });
+    });
 });
+
 
 // GET: Buscar dados de um usuário específico
 app.get('/visualizar_user/:id', async (req, res) => {
     const { id } = req.params;
     try {
         const [usuario] = await db.promise().query(
-            'SELECT id, nome, sobrenome, email, organizacao FROM usuarios WHERE id = ?',
+            'SELECT id, nome, sobrenome, email, organizacao, tipo FROM usuarios WHERE id = ?',
             [id]
         );
 

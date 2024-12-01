@@ -5,6 +5,7 @@ import User_Start from "./pages/User_Start";
 import User_Cadastrar_Task from "./components/user/User_Cadastrar_Task";
 import User_Visualizar_Tasks from "./components/user/User_Visualizar_Tasks";
 import User_Gerenciar_Task from "./components/user/User_Gerenciar_Task";
+import User_Gerenciar_User from "./components/user/User_Gerenciar_User";
 import Redefinir_Senha from "./pages/Redefinir_Senha";
 import Admin_Start from "./pages/Admin_Start";
 import Admin_Cadastro from "./pages/Admin_Cadastro";
@@ -39,6 +40,10 @@ const router = createBrowserRouter([
     {
         path: "/user_visualizar_task/:id", // Rota com parâmetro dinâmico
         element: <User_Gerenciar_Task /> // Componente que usa o ID
+    },
+    {
+        path: "/user_gerenciar_user/:id",
+        element: <User_Gerenciar_User />
     },
     
 	{
