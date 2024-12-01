@@ -465,6 +465,49 @@ app.delete('/delete_user/:id/tasks/:idTask',(req, res) => {
     }
 });
 
+// PUT: Atualizar usuário
+app.put('/atualizar_user/:id', async (req, res) => {
+    const { id } = req.params;
+    const { nome, sobrenome, email, organizacao } = req.body;
+
+    try {
+        // Não atualizamos a senha, apenas os campos nome, sobrenome, email, e organizacao
+        const [result] = await db.promise().query(
+            `UPDATE usuarios SET nome = ?, sobrenome = ?, email = ?, organizacao = ? WHERE id = ?`,
+            [nome, sobrenome, email, organizacao, id]
+        );
+
+        if (result.affectedRows === 0) {
+            return res.status(404).send('Usuário não encontrado.');
+        }
+
+        res.status(200).send('Usuário atualizado com sucesso!');
+    } catch (err) {
+        console.error('Erro ao atualizar usuário:', err.message);
+        res.status(500).send('Erro ao atualizar usuário: ' + err.message);
+    }
+});
+
+// GET: Buscar dados de um usuário específico
+app.get('/visualizar_user/:id', async (req, res) => {
+    const { id } = req.params;
+    try {
+        const [usuario] = await db.promise().query(
+            'SELECT id, nome, sobrenome, email, organizacao FROM usuarios WHERE id = ?',
+            [id]
+        );
+
+        if (usuario.length === 0) {
+            return res.status(404).send('Usuário não encontrado.');
+        }
+
+        res.status(200).json(usuario[0]); // Retorna apenas o primeiro (único) usuário encontrado
+    } catch (err) {
+        console.error('Erro ao buscar usuário:', err.message);
+        res.status(500).send('Erro ao buscar usuário: ' + err.message);
+    }
+});
+
 
 // DELETE USER
 app.delete('/deletar_user/:id', async (req, res) => {

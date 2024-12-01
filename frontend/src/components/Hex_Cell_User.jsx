@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom"; // Importa o Link
 
 export default function Hex_Cell_User() {
     const [usuario, setUsuario] = useState([]); // Mantido como array
 
     useEffect(() => {
-        const fetchuser = async () => {
+        const fetchUser = async () => {
             try {
-                const response = await fetch('http://localhost:3001/visualizar_user/'); // Substituído :id por 1 para teste
+                const response = await fetch('http://localhost:3001/visualizar_user/');
                 const data = await response.json();
                 console.log(data);
                 setUsuario(data); // Garante que os dados sejam armazenados como array
@@ -15,7 +16,7 @@ export default function Hex_Cell_User() {
             }
         };
 
-        fetchuser(); // Chama a função para buscar os dados
+        fetchUser(); // Chama a função para buscar os dados
     }, []); // Roda apenas uma vez ao carregar o componente
 
     const ArrayDataItems = ({ items }) => {
@@ -31,7 +32,12 @@ export default function Hex_Cell_User() {
                                 <div className="hex_wrapper">
                                     <div className="hex_user">
                                         <div className="lista_user">
-                                            <span className="span_titulo">{usuario.nome} - {usuario.sobrenome}</span>
+                                            {/* Usa o Link para redirecionar ao clicar */}
+                                            <Link to={`/admin_visualizar_user/${usuario.id}`}>
+                                                <span className="span_titulo">
+                                                    {usuario.nome} - {usuario.sobrenome}
+                                                </span>
+                                            </Link>
                                         </div>
                                     </div>
                                 </div>
