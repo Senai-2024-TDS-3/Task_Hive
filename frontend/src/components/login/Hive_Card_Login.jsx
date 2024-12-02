@@ -6,13 +6,13 @@ import Form_Cadastro_User from "../forms/Form_Cadastro_User";
 import Form_Esqueci_Senha from "../forms/Form_Esqueci_Senha";
 
 export default function Hive_Card_Login() {
-    // useState de login e exibição de form de cadastro
     const [email, setEmail] = useState("");
     const [senha, setSenha] = useState("");
     const [error, setError] = useState("");
     const [exibirCadastro, setExibirCadastro] = useState(false);
     const [mostrarModal, setMostrarModal] = useState(false);
     const [emailModal, setEmailModal] = useState("");
+    const [mostrarLogin, setMostrarLogin] = useState(true);
 
     const navigate = useNavigate();
 
@@ -32,7 +32,6 @@ export default function Hive_Card_Login() {
             setError("Erro ao fazer login. Tente novamente.");
         }
         console.log("Senha enviada para login:", senha);
-
     };
 
     // Const para exibir o card/form de cadastro de usuário
@@ -51,8 +50,11 @@ export default function Hive_Card_Login() {
 
     // Função para voltar ao login
     const handleVoltarLogin = () => {
-        setExibirCadastro(false); // Esconde o formulário de cadastro e mostra o login
+        setMostrarLogin(true); // Mostra o card de login novamente
+        setExibirCadastro(false); // Garante que o formulário de cadastro seja escondido
+        setMostrarModal(false); // Fecha o modal de "Esqueci minha senha", caso esteja aberto
     };
+    
 
     const handleEsqueciSenha = async () => {
         try {
@@ -67,7 +69,8 @@ export default function Hive_Card_Login() {
     return (
         // Form de login
         <div className="hex-grid">
-            {!exibirCadastro ? (
+            {/* Exibir o card de login apenas quando 'mostrarLogin' for true */}
+            {mostrarLogin && !exibirCadastro && (
                 <div className="hex">
                     <label>Email:</label>
                     <input
@@ -91,17 +94,22 @@ export default function Hive_Card_Login() {
                     {error && <p style={{ color: "red" }}>{error}</p>}
                     <br />
                     <div className="hex_links">
-                        {/* Ao clicar exibira o modal para "esqueci minha senha" ou "cadastrar"*/}
-                        <p onClick={() => setMostrarModal(true)}>Esqueci minha senha</p>
+                        <p onClick={() => { setMostrarModal(true); setMostrarLogin(false); }}>
+                            Esqueci minha senha
+                        </p>
                         <p onClick={() => setExibirCadastro(true)}>Cadastrar</p>
                     </div>
                 </div>
-            ) : (
+            )}
+
+            {exibirCadastro && (
                 <Form_Cadastro_User onSubmit={handleCadastroSubmit} onVoltarLogin={handleVoltarLogin} />
             )}
+
+            {/* Modal de Esqueci Minha Senha */}
             <Form_Esqueci_Senha
                 isOpen={mostrarModal}
-                onClose={() => setMostrarModal(false)}
+                onClose={handleVoltarLogin} // A função 'handleVoltarLogin' fecha o modal e mostra o login novamente
                 onSubmit={handleEsqueciSenha}
                 email={emailModal}
                 setEmail={setEmailModal}

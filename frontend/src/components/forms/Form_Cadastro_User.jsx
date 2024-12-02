@@ -106,14 +106,14 @@ export default function Form_Cadastro_User({ onSubmit, onVoltarLogin }) {
                             className="mt-4 w-full bg-black text-white text-weigt font-bold py-2 rounded-none hover:bg-[#CF7500] transition">
                             Deletar
                         </button>
-                   
-                    <button
+                        <button
                         type="button"
-                        onClick={onVoltarLogin} // Chamando a função onGoBack quando o botão for clicado
+                        onClick={onVoltarLogin} // Chamando a função passada como prop
                         className="mt-4 w-full bg-black text-white font-bold py-2 rounded-none hover:bg-[#CF7500] transition"
-                    >
+                        >
                         Voltar
-                    </button>
+                        </button>
+
                 </form>
             </div>
         </div>
