@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import axios from 'axios';
 
 export default function Form_Cadastro_Task() {
     // Definindo os estados do formulário
@@ -7,6 +8,25 @@ export default function Form_Cadastro_Task() {
     const [status, setStatus] = useState('Pendente');
     const [prazo, setPrazo] = useState('');
     const [idUsuario, setIdUsuario] = useState(null); // O id do usuário será carregado aqui
+    const [userName, setUserName] = useState ({ nome: "", sobrenome: ""});
+
+    useEffect(() => {
+        const fetchUsername = async () => {
+            const userId = localStorage.getItem("id_usuario");
+            if (userId) {
+                try {
+                    const response = await axios.get(`http://localhost:3001/visualizar_user/${userId}`);
+                    setUserName(response.data);
+                } catch (error) {
+                    console.error("Erro ao buscar informações do usuário:", error);
+                }
+            }
+        };
+        fetchUsername();
+    }, []);
+
+
+
 
     useEffect(() => {
         const usuarioId = localStorage.getItem("id_usuario");
@@ -59,7 +79,7 @@ export default function Form_Cadastro_Task() {
     return (
         <div className="form-container">
             <form onSubmit={handleSubmit}>
-                <p>Nome Usuario {idUsuario}</p>
+                <p>{userName.nome} {userName.sobrenome}</p>
                 {/* Aqui pode puxar o nome do usuário do estado ou contexto */}
                 <div className="form-row">
                     <label>
@@ -94,7 +114,7 @@ export default function Form_Cadastro_Task() {
                 <div className="form-task">
                     <label>
                         Descrição:
-                        <textarea 
+                        <textarea
                             className="text-area"
                             placeholder="Digite a descrição da tarefa"
                             value={descricao}
