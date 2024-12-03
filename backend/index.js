@@ -172,7 +172,7 @@ app.post("/cadastrar_user",(req, res) => {
     try {
         const senhaCriptografada = CryptoJS.AES.encrypt(senha, "chaveSecreta").toString();
 
-         db.query(
+        db.query(
             `INSERT INTO usuarios (nome, sobrenome, email, senha, organizacao, tipo) VALUES (?, ?, ?, ?, ?, 'usuario')`,
             [nome, sobrenome, email, senhaCriptografada, organizacao]
         );
@@ -328,7 +328,7 @@ app.put('/update_task/:id',(req, res) => {
         // Extrair somente a data (YYYY-MM-DD) do prazo
         const prazoFormatado = prazo.split('T')[0]; // Remove a parte de tempo, ficando só com a data
 
-       db.query(
+    db.query(
             `UPDATE tarefas SET titulo = ?, descricao = ?, status = ?, prazo = ? WHERE id = ?`,
             [titulo, descricao, status, prazoFormatado, id],
             (err, results) => {

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom"; // Importa o Link para criar as rotas
+import { Link } from "react-router-dom";
 
 export default function Hex_Cell_Task() {
     const [tasks, setTasks] = useState([]);
@@ -19,20 +19,29 @@ export default function Hex_Cell_Task() {
     }, []);
 
     const ArrayDataItems = ({ items }) => {
+        const hexagonsLeft = 6; // Número de hexágonos por linha
+        const hexagonsRight = 5; // Número de hexágonos por linha
+
         return (
             <div className="hex_bigbox">
                 <div className="Hex_Layout_Tasks">
                     {items.map((tarefa, index) => {
-                        
-                        const classe = Math.floor(index / 7) % 2 === 0 ? "layout_left" : "layout_right";
+                        // Define se é uma linha par ou ímpar
+                        const isEvenRow = Math.floor(index / hexagonsLeft) % 2 === 0;
+                        const isnotEven = Math.floor(index / hexagonsRight) % 2 !== 0;
+
+                        // Alterna a posição dos hexágonos
+                        const classe = isEvenRow ? "layout_left" : "layout_right";
+                        const classe2 = isnotEven ? "layout_right" : "layout_left";
 
                         return (
-                            <div className={`Hex_Layout_Tasks ${classe}`} key={index}>
+                            <div className={`hex_item ${classe} ${classe2}`} key={index}>
                                 <div className="hex_wrapper">
                                     <div className="hex_task">
                                         <div className="lista_task">
                                             <Link to={`/admin_visualizar_task/${tarefa.id}`} className="task_link">
-                                                {/* Adiciona o Link para redirecionar */}
+                                                <span className="span_nome">{tarefa.nome}</span>
+                                                <br />
                                                 <span className="span_titulo">{tarefa.titulo}</span>
                                                 <br />
                                                 <span className="span_prazo">{tarefa.prazo}</span>
