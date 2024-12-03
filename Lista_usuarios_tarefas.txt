@@ -75,4 +75,34 @@ Tarefa 05:
 - Status: pendente
 - Prazo: 2024-12-20
 
+Tarefa 06:
+- Título: Revisar código-fonte do projeto
+- Descrição: Avaliar e corrigir possíveis falhas no código do sistema em desenvolvimento.
+- Status: pendente
+- Prazo: 2024-12-12
+
+Tarefa 07:
+- Título: Preparar orçamento de marketing
+- Descrição: Criar o planejamento de custos para as campanhas de marketing do próximo trimestre.
+- Status: pendente
+- Prazo: 2024-12-07
+
+Tarefa 08:
+- Título: Atualizar site institucional
+- Descrição: Realizar ajustes de design e adicionar novas informações no site da empresa.
+- Status: pendente
+- Prazo: 2024-12-14
+
+Tarefa 09:
+- Título: Treinamento de equipe de vendas
+- Descrição: Organizar e ministrar um curso sobre técnicas de vendas avançadas para a equipe comercial.
+- Status: pendente
+- Prazo: 2024-12-18
+
+Tarefa 10:
+- Título: Testar novo aplicativo mobile
+- Descrição: Executar testes de funcionalidade e usabilidade na versão beta do aplicativo.
+- Status: pendente
+- Prazo: 2024-12-22
+
 
