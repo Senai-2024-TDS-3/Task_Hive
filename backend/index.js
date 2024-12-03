@@ -366,6 +366,7 @@ app.get('/visualizar_user/', async (req, res) => {
     }
 });
 
+
 // Exemplo de como formatar a data para dd/mm/aaaa no backend (Express)
 function formatDate(date) {
     const d = new Date(date);

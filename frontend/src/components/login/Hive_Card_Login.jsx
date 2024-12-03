@@ -27,7 +27,7 @@ export default function Hive_Card_Login() {
             localStorage.setItem("id_usuario", id_usuario);
     
             if (redirect === "Admin_Start") navigate("/admin_start");
-            else navigate("/User_Start");
+            else navigate("/user_start");
         } catch (err) {
             setError("Erro ao fazer login. Tente novamente.");
         }
