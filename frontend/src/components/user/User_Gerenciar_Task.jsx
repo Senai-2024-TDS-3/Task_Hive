@@ -8,6 +8,23 @@ export default function User_Gerenciar_Task() {
     const navigate = useNavigate();
     const [tarefa, setTarefa] = useState({});
     const [status, setStatus] = useState("");
+    const [userName, setUserName] = useState ({ nome: "", sobrenome: ""});
+
+    useEffect(() => {
+        const fetchUsername = async () => {
+            const userId = localStorage.getItem("id_usuario");
+            if (userId) {
+                try {
+                    const response = await axios.get(`http://localhost:3001/visualizar_user/${userId}`);
+                    setUserName(response.data);
+                } catch (error) {
+                    console.error("Erro ao buscar informações do usuário:", error);
+                }
+            }
+        };
+        fetchUsername();
+    }, []);
+
 
     useEffect(() => {
         const usuarioId = localStorage.getItem("id_usuario");
@@ -73,7 +90,7 @@ export default function User_Gerenciar_Task() {
             <User_Navbar />
             <div className="form-container-gerenciar">
                 <form onSubmit={handleUpdate} className="form-gerenciar">
-                    <p>Usuário: {tarefa.nome} {tarefa.sobrenome}</p>
+                    <p>{userName.nome} {userName.sobrenome}</p>
                     <div className="form-row-gerenciar">
                         <label>
                             Nome da Tarefa:
