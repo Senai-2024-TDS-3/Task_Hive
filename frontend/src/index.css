@@ -108,11 +108,6 @@ img
 	box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-/* .form-gerenciar
-{
-	width: 100%;
-} */
-
 .task-form 
 {
 	width: 100%;
@@ -131,13 +126,6 @@ img
 	gap: 1rem;
 }
 
-/* .form-row-gerenciar
-{
-	width: 100%;
-	display: flex;
-	align-items: center;
-	align-content: center;
-} */
 
 .form-row-btn-gerenciar
 {
@@ -182,102 +170,6 @@ span{
 	resize: none;
 }
 
-
-
-
-/* CONFIGURAÇÃO DO LAYOUT */
-.hex_bigbox {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    padding: 2%;
-    width: 98%;
-}
-
-.Hex_Layout_Tasks {
-    display: flex;
-    flex-flow: row wrap;
-    justify-content: center;
-    gap: 10px;
-}
-
-.layout_left {
-    display: grid;
-	grid-template-columns: repeat(7, 1fr);
-}
-
-.layout_right {
-    display: grid;
-	grid-template-columns: repeat(6, 1fr);
-}
-
-/* .hex_teste
-{
-	display: flex;
-	flex-direction: row;
-	flex-wrap: wrap;
-	align-items: center;
-	align-content: center;
-	justify-content: center;
-	width: 200px;
-	height: 200px;
-	background-color: #F0A500;
-	color: black;
-	clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
-	margin: 0.5%;
-} */
-
-.hex_task,
-.hex_user
-{
-	display: flex;
-	flex-direction: row;
-	flex-wrap: wrap;
-	align-items: center;
-	align-content: center;
-	justify-content: center;
-	width: 200px;
-	height: 200px;
-	background-color: #F0A500;
-	color: black;
-	clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
-	margin: 0.5%;
-	text-align: center;
-}
-
-.hex_wrapper
-{
-	flex-direction: row;
-	flex-wrap: wrap;
-	align-items: center;
-	align-content: center;
-	justify-content: center;
-	width: 205px;
-	height: 208px;
-	background-color: black;
-	clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
-	margin: 0.5%;
-	padding: 0.05%;
-	
-}
-
-.lista_task,
-.lista_user
-{
-	font-size: 8px;
-}
-
-.hex_task:hover,
-.hex_user:hover
-{
-	background-color: #cf7500;
-}
-
-.hex_teste:active
-{
-	background-color: #8d5000;
-}
-
 .btn_width
 {
 	display: flex;
@@ -303,4 +195,134 @@ button:hover
 {
 	background-color: #cf7500;
 	color: #000000;
+}
+
+/* CONFIGURAÇÃO DO LAYOUT */
+.hex_bigbox {
+    display: flex;
+    align-self: center;
+    justify-self: center;
+    align-items: center;
+    align-content: center;
+    justify-content: center;
+    padding: 2%;
+    width: 85%;
+}
+
+.Hex_Layout_Tasks {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    align-self: center;
+    align-content: center;
+    justify-content: center;
+}
+
+.hex_wrapper {
+    width: 185px;
+    height: 185px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: black;
+    clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+}
+
+.hex_task {
+    width: 175px;
+    height: 175px;
+    background-color: #F0A500;
+    color: black;
+    clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 10px;
+    transition: background-color 0.3s;
+}
+
+.hex_task:hover {
+    background-color: #cf7500;
+}
+
+.hex_task_content {
+    text-align: center;
+    font-size: 12px;
+    padding: 10px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.task_link {
+    text-decoration: none;
+    color: #333;
+}
+
+.span_nome {
+    font-weight: bold;
+}
+
+.span_titulo,
+.span_prazo {
+    margin-top: 5px;
+}
+
+.layout_left {
+    display: flex;
+    align-self: center;
+    align-items: flex-start;
+    align-content: flex-start;
+    justify-content: flex-start;
+    justify-self: center;
+    margin-left: 20px; /* Desloca as linhas ímpares */
+    margin-right: 1%;
+}
+
+.layout_right {
+    display: flex;
+    align-self: center;
+    align-items: flex-end;
+    align-content: flex-end;
+    justify-content: flex-end;
+    justify-self: center;
+    margin-right: 7px; /* Desloca as linhas pares */
+    margin-left: 2.1%;
+    margin-bottom: 1%;
+}
+
+@media (width: 1366px)
+{
+    /* .hex_bigbox {
+        width: 85%;
+    } */
+
+    .hex_task {
+        width: 125px;
+        height: 125px;
+    }
+
+    .hex_wrapper {
+        width: 135px;
+        height: 135px;
+    }
+
+    .layout_left {
+        margin-left: 10px; /* Desloca as linhas ímpares */
+        margin-right: 1%;
+    }
+    
+    .layout_right {
+        margin-left: 2.1%;
+        margin-bottom: 0.2%;
+    }
+
+    .span_nome,
+    .span_titulo,
+    .span_prazo {
+        font-size: 12px;
+    }
 }

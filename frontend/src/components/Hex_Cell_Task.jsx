@@ -19,39 +19,53 @@ export default function Hex_Cell_Task() {
     }, []);
 
     const ArrayDataItems = ({ items }) => {
-        const hexagonsLeft = 6; // Número de hexágonos por linha
-        const hexagonsRight = 5; // Número de hexágonos por linha
+        const hexagonsPerRowOdd = 7;  // Hexágonos na linha ímpar
+        const hexagonsPerRowEven = 6; // Hexágonos na linha par
+
+        const rows = [];
+        let currentRow = [];
+
+        // Dividindo as tarefas em linhas de 7 e 6
+        items.forEach((tarefa, index) => {
+            if (currentRow.length === (index % 2 === 0 ? hexagonsPerRowOdd : hexagonsPerRowEven)) {
+                rows.push(currentRow);
+                currentRow = [];
+            }
+            currentRow.push(tarefa);
+        });
+
+        // Adiciona a última linha se não for adicionada
+        if (currentRow.length > 0) {
+            rows.push(currentRow);
+        }
 
         return (
             <div className="hex_bigbox">
                 <div className="Hex_Layout_Tasks">
-                    {items.map((tarefa, index) => {
-                        // Define se é uma linha par ou ímpar
-                        const isEvenRow = Math.floor(index / hexagonsLeft) % 2 === 0;
-                        const isnotEven = Math.floor(index / hexagonsRight) % 2 !== 0;
-
-                        // Alterna a posição dos hexágonos
-                        const classe = isEvenRow ? "layout_left" : "layout_right";
-                        const classe2 = isnotEven ? "layout_right" : "layout_left";
-
-                        return (
-                            <div className={`hex_item ${classe} ${classe2}`} key={index}>
-                                <div className="hex_wrapper">
-                                    <div className="hex_task">
-                                        <div className="lista_task">
-                                            <Link to={`/admin_visualizar_task/${tarefa.id}`} className="task_link">
-                                                <span className="span_nome">{tarefa.nome}</span>
-                                                <br />
-                                                <span className="span_titulo">{tarefa.titulo}</span>
-                                                <br />
-                                                <span className="span_prazo">{tarefa.prazo}</span>
-                                            </Link>
-                                        </div>
+                    {rows.map((row, rowIndex) => (
+                        <div 
+                            key={rowIndex} 
+                            className="hex_wrapper" 
+                            style={{
+                                justifyContent: 'center', 
+                                marginLeft: rowIndex % 2 === 1 ? '40px' : '0'
+                            }}
+                        >
+                            {row.map((tarefa, index) => (
+                                <div className="hex_task" key={index}>
+                                    <div className="hex_task_content">
+                                        <Link to={`/admin_visualizar_task/${tarefa.id}`} className="task_link">
+                                            <span className="span_nome">{tarefa.nome}</span>
+                                            <br />
+                                            <span className="span_titulo">{tarefa.titulo}</span>
+                                            <br />
+                                            <span className="span_prazo">{tarefa.prazo}</span>
+                                        </Link>
                                     </div>
                                 </div>
-                            </div>
-                        );
-                    })}
+                            ))}
+                        </div>
+                    ))}
                 </div>
             </div>
         );
