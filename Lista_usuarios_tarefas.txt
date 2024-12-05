@@ -36,9 +36,9 @@ Usuário 05:
 - Organização: SunTech Solutions
 
 ADMIN:
-- Nome : Admin01
-- Sobrenome: adminsurname01
-- Email: adminteste@gmail.com
+- Nome : Dean
+- Sobrenome: Woods
+- Email: deanwoods@gmail.com
 - Senha: @Adminequivocadoestressado789123
 - Organização: Admins
 

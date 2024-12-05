@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 
 export default function Hex_Cell_Task() {
     const [tasks, setTasks] = useState([]);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         const fetchtask = async () => {
@@ -12,6 +13,9 @@ export default function Hex_Cell_Task() {
                 setTasks(data);
             } catch (error) {
                 console.error("Erro ao buscar tarefas:", error);
+            } finally {
+                setLoading(false); // Finaliza o carregamento
+            
             }
         };
 
@@ -19,61 +23,40 @@ export default function Hex_Cell_Task() {
     }, []);
 
     const ArrayDataItems = ({ items }) => {
-        const hexagonsPerRowOdd = 7;  // Hexágonos na linha ímpar
-        const hexagonsPerRowEven = 6; // Hexágonos na linha par
-
-        const rows = [];
-        let currentRow = [];
-
-        // Dividindo as tarefas em linhas de 7 e 6
-        items.forEach((tarefa, index) => {
-            if (currentRow.length === (index % 2 === 0 ? hexagonsPerRowOdd : hexagonsPerRowEven)) {
-                rows.push(currentRow);
-                currentRow = [];
-            }
-            currentRow.push(tarefa);
-        });
-
-        // Adiciona a última linha se não for adicionada
-        if (currentRow.length > 0) {
-            rows.push(currentRow);
-        }
-
         return (
             <div className="hex_bigbox">
                 <div className="Hex_Layout_Tasks">
-                    {rows.map((row, rowIndex) => (
-                        <div 
-                            key={rowIndex} 
-                            className="hex_wrapper" 
-                            style={{
-                                justifyContent: 'center', 
-                                marginLeft: rowIndex % 2 === 1 ? '40px' : '0'
-                            }}
-                        >
-                            {row.map((tarefa, index) => (
-                                <div className="hex_task" key={index}>
-                                    <div className="hex_task_content">
-                                        <Link to={`/admin_visualizar_task/${tarefa.id}`} className="task_link">
-                                            <span className="span_nome">{tarefa.nome}</span>
-                                            <br />
-                                            <span className="span_titulo">{tarefa.titulo}</span>
-                                            <br />
-                                            <span className="span_prazo">{tarefa.prazo}</span>
-                                        </Link>
+                    {items.map((tarefa, index) => {
+                        const classe = Math.floor(index / 7) % 2 === 0 ? "layout_left" : "layout_right";
+
+                        return (
+                            <div className={`Hex_Layout_Tasks ${classe}`} key={index}>
+                                <div className="hex_wrapper">
+                                    <div className="hex_task">
+                                        <div className="lista_task">
+                                            <Link to={`/admin_visualizar_task/${tarefa.id}`} className="task-link">
+                                                <span className="span_titulo">{tarefa.titulo}</span>
+                                                <br />
+                                                <span className="span_prazo">{tarefa.prazo}</span>
+                                            </Link>
+                                        </div>
                                     </div>
                                 </div>
-                            ))}
-                        </div>
-                    ))}
+                            </div>
+                        );
+                    })}
                 </div>
             </div>
         );
     };
-
     return (
         <div>
-            <ArrayDataItems items={tasks} />
+            {loading ? (
+                <p>Carregando tarefas...</p>
+            ) : (
+                <ArrayDataItems items={tasks} />
+            )}
         </div>
     );
 }
+

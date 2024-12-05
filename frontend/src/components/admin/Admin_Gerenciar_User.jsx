@@ -11,12 +11,13 @@ export default function Admin_Gerenciar_User() {
         sobrenome: "",
         email: "",
         organizacao: "",
-        tipo: ""
+        tipo: "",
     });
 
     // Busca os dados do usuário ao carregar a página
     useEffect(() => {
-        axios.get(`http://localhost:3001/visualizar_user/${id}`)
+        axios
+            .get(`http://localhost:3001/visualizar_user/${id}`)
             .then((response) => {
                 setUsuario(response.data); // Preenche os campos com os dados do usuário
             })
@@ -27,7 +28,21 @@ export default function Admin_Gerenciar_User() {
     const handleUpdate = (e) => {
         e.preventDefault();
 
-        axios.put(`http://localhost:3001/atualizar_user/${id}`, usuario)
+        // Criação de um objeto com os campos não vazios
+        const dadosAtualizados = {};
+        if (usuario.nome.trim()) dadosAtualizados.nome = usuario.nome;
+        if (usuario.sobrenome.trim()) dadosAtualizados.sobrenome = usuario.sobrenome;
+        if (usuario.email.trim()) dadosAtualizados.email = usuario.email;
+        if (usuario.organizacao.trim()) dadosAtualizados.organizacao = usuario.organizacao;
+
+        // Verifica se há algum dado para atualizar
+        if (Object.keys(dadosAtualizados).length === 0) {
+            alert("Nenhum dado para atualizar.");
+            return;
+        }
+
+        axios
+            .put(`http://localhost:3001/atualizar_user/${id}`, dadosAtualizados)
             .then(() => {
                 alert("Usuário atualizado com sucesso!");
                 navigate("/admin_start"); // Redireciona após a atualização
@@ -38,7 +53,8 @@ export default function Admin_Gerenciar_User() {
     // Função para lidar com a exclusão do usuário
     const handleDelete = () => {
         if (window.confirm("Tem certeza que deseja deletar este usuário?")) {
-            axios.delete(`http://localhost:3001/deletar_user/${id}`)
+            axios
+                .delete(`http://localhost:3001/deletar_user/${id}`)
                 .then(() => {
                     alert("Usuário deletado com sucesso!");
                     navigate("/admin_start"); // Redireciona após a exclusão
@@ -62,7 +78,9 @@ export default function Admin_Gerenciar_User() {
                                     type="text"
                                     id="nome"
                                     value={usuario.nome}
-                                    onChange={(e) => setUsuario({ ...usuario, nome: e.target.value })}
+                                    onChange={(e) =>
+                                        setUsuario({ ...usuario, nome: e.target.value })
+                                    }
                                     className="mt-1 p-2 border rounded-none bg-gray-200 focus:outline-none"
                                 />
                             </div>
@@ -74,7 +92,9 @@ export default function Admin_Gerenciar_User() {
                                     type="email"
                                     id="email"
                                     value={usuario.email}
-                                    onChange={(e) => setUsuario({ ...usuario, email: e.target.value })}
+                                    onChange={(e) =>
+                                        setUsuario({ ...usuario, email: e.target.value })
+                                    }
                                     className="mt-1 p-2 border rounded-none bg-gray-200 focus:outline-none"
                                 />
                             </div>
@@ -86,7 +106,9 @@ export default function Admin_Gerenciar_User() {
                                     type="text"
                                     id="sobrenome"
                                     value={usuario.sobrenome}
-                                    onChange={(e) => setUsuario({ ...usuario, sobrenome: e.target.value })}
+                                    onChange={(e) =>
+                                        setUsuario({ ...usuario, sobrenome: e.target.value })
+                                    }
                                     className="mt-1 p-2 border rounded-none bg-gray-200 focus:outline-none"
                                 />
                             </div>
@@ -98,22 +120,24 @@ export default function Admin_Gerenciar_User() {
                                     type="text"
                                     id="organizacao"
                                     value={usuario.organizacao}
-                                    onChange={(e) => setUsuario({ ...usuario, organizacao: e.target.value })}
+                                    onChange={(e) =>
+                                        setUsuario({ ...usuario, organizacao: e.target.value })
+                                    }
                                     className="mt-1 p-2 border rounded-none bg-gray-200 focus:outline-none"
                                 />
                             </div>
                         </div>
                         <div className="flex flex-col col-span-2">
-                        <label htmlFor="tipo" className="text-black font-medium">
-                         Tipo:
-                        </label>
-                        <input
-                         type="text"
-                        id="tipo"
-                        value={usuario.tipo}
-                        readOnly
-                        className="mt-1 p-2 border rounded-none bg-gray-300 focus:outline-none text-gray-600 cursor-not-allowed"
-                        />
+                            <label htmlFor="tipo" className="text-black font-medium">
+                                Tipo:
+                            </label>
+                            <input
+                                type="text"
+                                id="tipo"
+                                value={usuario.tipo}
+                                readOnly
+                                className="mt-1 p-2 border rounded-none bg-gray-300 focus:outline-none text-gray-600 cursor-not-allowed"
+                            />
                         </div>
 
                         <button

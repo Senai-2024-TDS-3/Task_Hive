@@ -34,25 +34,25 @@ export default function User_Gerenciar_User() {
 
     const handleUpdateUser = async (e) => {
         e.preventDefault();
-        let senhaCriptografada = null;
-
+        const dadosAtualizados = {};
+    
+        // Adicionar somente os campos que não estão em branco
+        if (nome.trim() !== "") dadosAtualizados.nome = nome;
+        if (sobrenome.trim() !== "") dadosAtualizados.sobrenome = sobrenome;
+        if (email.trim() !== "") dadosAtualizados.email = email;
+        if (organizacao.trim() !== "") dadosAtualizados.organizacao = organizacao;
         if (senha.trim() !== "") {
-            senhaCriptografada = CryptoJS.AES.encrypt(senha, "chaveSecreta").toString();
+            dadosAtualizados.senha = CryptoJS.AES.encrypt(senha, "chaveSecreta").toString();
         }
-
+    
         try {
-            await axios.put(`http://localhost:3001/atualizar_user/${id}`, {
-                nome,
-                sobrenome,
-                email,
-                organizacao,
-                senha: senhaCriptografada, // Apenas envia se houver uma nova senha
-            });
+            await axios.put(`http://localhost:3001/atualizar_user/${id}`, dadosAtualizados);
             alert("Dados atualizados com sucesso!");
         } catch (err) {
-            alert("Erro ao atualizar dados. Tente novamente.");
+            alert("Erro ao atualizar dados. Os campos não podem ser vazios.");
         }
     };
+    
 
     return (
         <>
@@ -101,7 +101,8 @@ export default function User_Gerenciar_User() {
                                 <label htmlFor="senha" className="text-black font-medium">
                                     Senha:
                                 </label>
-                                <input
+                                <input 
+                                    placeholder="Digite aqui sua nova senha (caso queira alterar)"
                                     type="password"
                                     id="senha"
                                     value={senha}
