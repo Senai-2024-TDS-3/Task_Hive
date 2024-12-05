@@ -1,9 +1,28 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom"; // Importa o Link para criar as rotas
+import axios from 'axios';
+
 
 export default function Hex_Cell_User_Task() {
     const [tasks, setTasks] = useState([]);
     const [loading, setLoading] = useState(true); // Estado para controlar o carregamento
+    const [usuario, setUserName] = useState({ nome: "", sobrenome: "" });
+
+    useEffect(() => {
+        const fetchUsername = async () => {
+            const userId = localStorage.getItem("id_usuario");
+            if (userId) {
+                try {
+                    const response = await axios.get(`http://localhost:3001/visualizar_user/${userId}`);
+                    console.log("Dados do usuário:", response.data);
+                    setUserName(response.data);
+                } catch (error) {
+                    console.error("Erro ao buscar informações do usuário:", error);
+                }
+            }
+        };
+        fetchUsername();
+    }, []);
 
     useEffect(() => {
         // Recupera o id do usuário do localStorage
@@ -19,7 +38,7 @@ export default function Hex_Cell_User_Task() {
                 // Requisição para pegar as tarefas do usuário
                 const response = await fetch(`http://localhost:3001/visualizar_user/${usuarioId}/tasks`);
                 const data = await response.json();
-                
+
                 // Verifique se o retorno é um array
                 if (Array.isArray(data)) {
                     setTasks(data); // Atualiza o estado com as tarefas
@@ -32,7 +51,7 @@ export default function Hex_Cell_User_Task() {
                 setLoading(false); // Finaliza o carregamento
             }
         };
-        
+
         fetchTasks();
     }, []); // Executa o efeito uma vez quando o componente é montado
 
@@ -49,9 +68,14 @@ export default function Hex_Cell_User_Task() {
                                     <div className="hex_task">
                                         <div className="lista_task">
                                             <Link to={`/user_visualizar_task/${tarefa.id}`} className="task-link">
-                                                <span className="span_titulo">{tarefa.titulo}</span>
+                                                {/* Aqui, você exibe os dados do usuário */}
+                                                <span className="span_nome">{usuario.nome}</span> {/* Nome do usuário */}
                                                 <br />
-                                                <span className="span_prazo">{tarefa.prazo}</span>
+                                                <span className="span_nome">{usuario.sobrenome}</span> {/* Sobrenome do usuário */}
+                                                <br />
+                                                <span className="span_titulo">{tarefa.titulo}</span> {/* Título da tarefa */}
+                                                <br />
+                                                <span className="span_prazo">{tarefa.prazo}</span> {/* Prazo da tarefa */}
                                             </Link>
                                         </div>
                                     </div>

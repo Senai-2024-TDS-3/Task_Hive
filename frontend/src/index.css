@@ -262,7 +262,8 @@ button:hover
     color: #333;
 }
 
-.span_nome {
+.span_nome,
+.span_titulo {
     font-weight: bold;
 }
 
@@ -292,6 +293,13 @@ button:hover
     margin-right: 7px; /* Desloca as linhas pares */
     margin-left: 2.1%;
     margin-bottom: 1%;
+}
+
+@media (width: 1920px)
+{
+    .hex_bigbox {
+        margin-left: 5.5%;
+    }
 }
 
 @media (width: 1366px)
