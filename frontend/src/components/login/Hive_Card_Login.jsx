@@ -72,23 +72,23 @@ export default function Hive_Card_Login() {
             {/* Exibir o card de login apenas quando 'mostrarLogin' for true */}
             {mostrarLogin && !exibirCadastro && (
                 <div className="hex">
-                    <label>Email:</label>
-                    <input
+                    <label className="login_label">Email:</label>
+                    <input className="login_input"
                         type="text"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                         placeholder="Digite seu email"
                     />
                     <br />
-                    <label>Senha:</label>
-                    <input
+                    <label className="login_label senha">Senha:</label>
+                    <input className="login_input"
                         type="password"
                         value={senha}
                         onChange={(e) => setSenha(e.target.value)}
                         placeholder="Digite sua senha"
                     />
                     <br />
-                    <button type="submit" onClick={handleLogin}>
+                    <button className="login_button" type="submit" onClick={handleLogin}>
                         Entrar
                     </button>
                     {error && <p style={{ color: "red" }}>{error}</p>}
