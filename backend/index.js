@@ -276,6 +276,7 @@ function formatDate(date) {
 // GET TAREFAS
 app.get('/visualizar_all_tasks', async (req, res) => {
     try {
+
         const [tarefas] = await db.promise().query(`SELECT * FROM tarefas`);
         
         // Formatar a data do prazo antes de enviar para o cliente
@@ -285,6 +286,7 @@ app.get('/visualizar_all_tasks', async (req, res) => {
                 prazo: formatDate(tarefa.prazo)
             };
         });
+
 
         if (tarefasComPrazoFormatado.length === 0) {
             return res.status(404).json({ message: 'Nenhuma tarefa encontrada' });
