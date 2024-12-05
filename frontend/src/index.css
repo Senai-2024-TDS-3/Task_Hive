@@ -304,9 +304,9 @@ button:hover
 
 @media (width: 1366px)
 {
-    /* .hex_bigbox {
-        width: 85%;
-    } */
+    .hex_bigbox {
+        margin-left: 18.5%;
+    }
 
     .hex_task {
         width: 125px;

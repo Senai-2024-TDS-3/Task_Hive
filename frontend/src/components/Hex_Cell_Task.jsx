@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import axios from 'axios';
 
 export default function Hex_Cell_Task() {
     const [tasks, setTasks] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [usuario, setUsuario] = useState({ nome: "", sobrenome: ""})
 
     useEffect(() => {
         const fetchtask = async () => {
@@ -11,11 +13,12 @@ export default function Hex_Cell_Task() {
                 const response = await fetch('http://localhost:3001/visualizar_all_tasks');
                 const data = await response.json();
                 setTasks(data);
+
+                console.log(data)
             } catch (error) {
                 console.error("Erro ao buscar tarefas:", error);
             } finally {
                 setLoading(false); // Finaliza o carregamento
-            
             }
         };
 
@@ -35,6 +38,11 @@ export default function Hex_Cell_Task() {
                                     <div className="hex_task">
                                         <div className="lista_task">
                                             <Link to={`/admin_visualizar_task/${tarefa.id}`} className="task-link">
+                                                {/* Nome e sobrenome do usuário que cadastrou a tarefa */}
+                                                <span className="span_nome">{usuario.nome}</span>
+                                                <br />
+                                                <span className="span_nome">{usuario.sobrenome}</span>
+                                                <br />
                                                 <span className="span_titulo">{tarefa.titulo}</span>
                                                 <br />
                                                 <span className="span_prazo">{tarefa.prazo}</span>
@@ -49,6 +57,7 @@ export default function Hex_Cell_Task() {
             </div>
         );
     };
+
     return (
         <div>
             {loading ? (
@@ -59,4 +68,3 @@ export default function Hex_Cell_Task() {
         </div>
     );
 }
-

@@ -277,7 +277,12 @@ function formatDate(date) {
 app.get('/visualizar_all_tasks', async (req, res) => {
     try {
 
-        const [tarefas] = await db.promise().query(`SELECT * FROM tarefas`);
+        const [tarefas] = await db.promise().query(` SELECT 
+        tarefas.*,
+        usuario.nome AS usuario_nome,
+        usuario.sobrenome AS usuario_sobrenome FROM tarefas
+        INNER JOIN 
+        usuario ON tarefas.usuario_id = usuario.id`, [id]);
         
         // Formatar a data do prazo antes de enviar para o cliente
         const tarefasComPrazoFormatado = tarefas.map(tarefa => {
