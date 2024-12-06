@@ -209,7 +209,8 @@ button:hover
     width: 85%;
 }
 
-.Hex_Layout_Tasks {
+.Hex_Layout_Tasks, 
+.Hex_Layout_User{
     display: flex;
     flex-wrap: wrap;
     align-items: center;
@@ -228,7 +229,8 @@ button:hover
     clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
 }
 
-.hex_task {
+.hex_task,
+.hex_user {
     width: 175px;
     height: 175px;
     background-color: #F0A500;
@@ -242,7 +244,8 @@ button:hover
     transition: background-color 0.3s;
 }
 
-.hex_task:hover {
+.hex_task:hover,
+.hex {
     background-color: #cf7500;
 }
 
@@ -257,7 +260,8 @@ button:hover
     align-items: center;
 }
 
-.task_link {
+.task_link,
+.user_link {
     text-decoration: none;
     color: #333;
 }

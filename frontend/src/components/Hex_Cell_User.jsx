@@ -33,7 +33,7 @@ export default function Hex_Cell_User() {
                                     <div className="hex_user">
                                         <div className="lista_user">
                                             {/* Usa o Link para redirecionar ao clicar */}
-                                            <Link to={`/admin_visualizar_user/${usuario.id}`}>
+                                            <Link to={`/admin_visualizar_user/${usuario.id}`}className="user-link">
                                                 <span className="span_titulo">
                                                     {usuario.nome} - {usuario.sobrenome}
                                                 </span>
