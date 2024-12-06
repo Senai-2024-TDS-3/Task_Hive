@@ -274,30 +274,25 @@ function formatDate(date) {
 
 // No momento de retornar as tarefas, use o formatDate para formatar o prazo
 // GET TAREFAS
+// GET ALL TASKS
 app.get('/visualizar_all_tasks', async (req, res) => {
     try {
+const query = `
+            SELECT 
+                tarefas.id, tarefas.titulo, 
+                DATE_FORMAT(tarefas.prazo, '%d/%m/%Y') AS prazo, -- Formata o prazo
+                usuarios.nome, usuarios.sobrenome
+            FROM tarefas
+            INNER JOIN usuarios ON tarefas.id_usuario = usuarios.id
+        `;
+        // Certifique-se de usar o método correto do driver MySQL
+        const [rows] = await db.promise().execute(query); // Use .promise().execute() para operações async
 
-        const [tarefas] = await db.promise().query(` SELECT 
-        tarefas.*,
-        usuario.nome AS usuario_nome,
-        usuario.sobrenome AS usuario_sobrenome FROM tarefas
-        INNER JOIN 
-        usuario ON tarefas.usuario_id = usuario.id`, [id]);
-        
-        // Formatar a data do prazo antes de enviar para o cliente
-        const tarefasComPrazoFormatado = tarefas.map(tarefa => {
-            return {
-                ...tarefa,
-                prazo: formatDate(tarefa.prazo)
-            };
-        });
-
-
-        if (tarefasComPrazoFormatado.length === 0) {
+        if (rows.length === 0) {
             return res.status(404).json({ message: 'Nenhuma tarefa encontrada' });
         }
 
-        res.status(200).json(tarefasComPrazoFormatado);
+        res.status(200).json(rows); // Certifique-se de retornar apenas os dados
     } catch (err) {
         console.error('Erro ao buscar tarefas:', err.message);
         res.status(500).send('Erro ao buscar tarefas: ' + err.message);
