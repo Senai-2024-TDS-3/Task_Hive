@@ -43,7 +43,7 @@ export default function Hex_Cell_User_Task() {
                 if (Array.isArray(data)) {
                     setTasks(data); // Atualiza o estado com as tarefas
                 } else {
-                    alert('Erro ao buscar tarefas: você não tem nenhuma tarefa cadastrada.');
+                    alert('Você não tem nenhuma tarefa cadastrada.');
                 }
             } catch (error) {
                 console.error("Erro ao buscar tarefas:", error);
