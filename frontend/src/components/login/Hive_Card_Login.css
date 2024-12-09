@@ -14,7 +14,7 @@
 	flex-direction: column;
 	width: 20vw;
 	height: 42vh;
-	background-color: #F0A500;
+	background-color: #f0a500;
 	clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
 	margin: 1%;
 	padding: 2%;
