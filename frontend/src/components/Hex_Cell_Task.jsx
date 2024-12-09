@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"; // Importa hooks do React para gerenciar estados e efeitos colaterais
+import { useEffect, useState } from "react"; // Importa  do React para gerenciar estados e efeitos colaterais
 import { Link } from "react-router-dom"; // Importa o componente Link para navegação entre páginas
 
 export default function Hex_Cell_Task() {
@@ -7,7 +7,7 @@ export default function Hex_Cell_Task() {
     const [loading, setLoading] = useState(true); // Estado para controlar o carregamento, inicialmente true
 
     useEffect(() => {
-        // Função assíncrona para buscar as tarefas da API
+        // Função  para buscar as tarefas da API
         const fetchtask = async () => {
             try {
                 // Faz uma requisição GET para o endpoint que retorna todas as tarefas

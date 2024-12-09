@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"; // Importa hooks do React para estados e efeitos colaterais
+import { useEffect, useState } from "react"; // Importa  do React para estados e efeitos colaterais
 import { Link } from "react-router-dom"; // Importa o Link para navegação
 import axios from 'axios'; // Importa a biblioteca axios para realizar requisições HTTP
 
@@ -11,7 +11,7 @@ export default function Hex_Cell_User_Task() {
     // useEffect para buscar os dados do usuário
     useEffect(() => {
         const fetchUsername = async () => {
-            const userId = localStorage.getItem("id_usuario"); // Recupera o ID do usuário do localStorage
+            const userId = localStorage.getItem("id_usuario"); // Recupera o ID do usuário.
             if (userId) {
                 try {
                     // Faz uma requisição GET para buscar os dados do usuário pelo ID
@@ -28,7 +28,7 @@ export default function Hex_Cell_User_Task() {
 
     // useEffect para buscar as tarefas do usuário
     useEffect(() => {
-        const usuarioId = localStorage.getItem("id_usuario"); // Recupera o ID do usuário do localStorage
+        const usuarioId = localStorage.getItem("id_usuario"); // Recupera o ID do usuário.
 
         if (!usuarioId) {
             // Caso o ID não esteja disponível, exibe um alerta e interrompe o processo

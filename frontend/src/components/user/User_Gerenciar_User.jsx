@@ -1,5 +1,5 @@
-import { useState, useEffect } from "react"; // Importando hooks para gerenciar estado e efeitos colaterais
-import { useParams } from "react-router-dom"; // Importando o hook useParams para capturar o parâmetro da URL
+import { useState, useEffect } from "react"; // Importando  para gerenciar estado e efeitos colaterais
+import { useParams } from "react-router-dom"; // Importando  useParams para capturar o parâmetro da URL
 import axios from "axios"; // Biblioteca para fazer requisições HTTP
 import CryptoJS from "crypto-js"; // Biblioteca para criptografar a senha
 import User_Navbar from "./User_Navbar"; // Componente de navegação para o usuário
@@ -12,14 +12,14 @@ export default function User_Gerenciar_User() {
     const [organizacao, setOrganizacao] = useState(""); // Estado para armazenar a organização do usuário
     const [senha, setSenha] = useState(""); // Estado para armazenar a senha do usuário
 
-    // Hook useEffect para carregar os dados do usuário sempre que o ID mudar
+    //  useEffect para carregar os dados do usuário sempre que o ID mudar
     useEffect(() => {
         if (id) {
             carregarDadosUsuario(id); // Chama a função para carregar os dados do usuário
         }
     }, [id]); // Este efeito é acionado sempre que o 'id' mudar
 
-    // Função assíncrona para carregar os dados do usuário a partir da API
+    // Função  para carregar os dados do usuário a partir da API
     const carregarDadosUsuario = async (userId) => {
         try {
             const response = await axios.get(`http://localhost:3001/visualizar_user/${userId}`);

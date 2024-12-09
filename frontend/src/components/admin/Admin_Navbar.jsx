@@ -1,11 +1,11 @@
-import { useEffect, useState } from "react"; // Hooks para gerenciar estado e ciclo de vida do componente
+import { useEffect, useState } from "react"; //gerenciar estado e ciclo de vida do componente
 import { NavLink, useNavigate } from "react-router-dom"; // NavLink para navegação com destaque e useNavigate para redirecionar
 import axios from "axios"; // Biblioteca para realizar requisições HTTP
 import Logo from "../../assets/images/TaskHive_Black.png"; // Importa a logo do projeto
 import Dark_Mode from "../darkmode/Dark_Mode"; // Componente para alternar entre modos claro e escuro
 
 export default function Admin_Navbar() {
-    const navigate = useNavigate(); // Hook para redirecionar o usuário
+    const navigate = useNavigate(); //redirecionar o usuário
     const [userInfo, setUserInfo] = useState({ nome: "", sobrenome: "" }); // Estado para armazenar as informações do administrador logado
 
     // Efeito para buscar as informações do administrador logado ao montar o componente

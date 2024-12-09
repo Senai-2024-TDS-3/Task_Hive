@@ -1,11 +1,11 @@
-import { useEffect, useState } from "react"; // Hooks para gerenciar o estado e efeitos colaterais
-import { NavLink, useNavigate } from "react-router-dom"; // Hooks de navegação e para criar links de navegação
+import { useEffect, useState } from "react"; //  para gerenciar o estado e efeitos 
+import { NavLink, useNavigate } from "react-router-dom"; //  de navegação e para criar links de navegação
 import axios from "axios"; // Biblioteca para requisições HTTP
 import Logo from "../../assets/images/TaskHive_Black.png"; // Importação da imagem do logo
 import Dark_Mode from "../darkmode/Dark_Mode"; // Importando o componente de modo escuro
 
 export default function User_Navbar() {
-    const navigate = useNavigate(); // Hook para navegação programática
+    const navigate = useNavigate(); //  para navegação 
     const [userInfo, setUserInfo] = useState({ nome: "", sobrenome: "" }); // Estado para armazenar as informações do usuário
 
     // useEffect para buscar informações do usuário assim que o componente for montado
@@ -29,7 +29,7 @@ export default function User_Navbar() {
     const handleLogout = () => {
         const confirmLogout = window.confirm("Você realmente deseja sair?"); // Pergunta de confirmação
         if (confirmLogout) {
-            localStorage.clear(); // Limpa os dados do localStorage
+            localStorage.clear(); // Limpa os dados
             navigate("/"); // Redireciona o usuário para a página inicial
         }
     };

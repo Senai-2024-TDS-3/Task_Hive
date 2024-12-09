@@ -15,7 +15,7 @@ export default function Hive_Card_Login() {
     const [emailModal, setEmailModal] = useState(""); // Armazena o email digitado no modal
     const [mostrarLogin, setMostrarLogin] = useState(true); // Controla a exibição do formulário de login
 
-    const navigate = useNavigate(); // Hook para navegação entre rotas
+    const navigate = useNavigate(); //   navegação entre rotas
 
     // Função para realizar o login
     const handleLogin = async (e) => {

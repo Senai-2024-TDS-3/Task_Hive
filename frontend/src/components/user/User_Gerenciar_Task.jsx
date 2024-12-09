@@ -1,11 +1,11 @@
-import { useParams, useNavigate } from "react-router-dom"; // Hooks para manipular a URL e navegação
-import { useEffect, useState } from "react"; // Hooks para efeitos colaterais e gerenciamento de estado
+import { useParams, useNavigate } from "react-router-dom"; //   manipular a URL e navegação
+import { useEffect, useState } from "react"; //   efeitos colaterais e gerenciamento de estado
 import axios from "axios"; // Biblioteca para fazer requisições HTTP
 import User_Navbar from "./User_Navbar"; // Componente de Navbar para o usuário
 
 export default function User_Gerenciar_Task() {
     const { id } = useParams(); // Captura o ID da tarefa a partir da URL
-    const navigate = useNavigate(); // Hook de navegação para redirecionamento após ações
+    const navigate = useNavigate(); //  navegação para redirecionamento após ações
     const [tarefa, setTarefa] = useState({}); // Estado para armazenar as informações da tarefa
     const [status, setStatus] = useState(""); // Estado para armazenar o status da tarefa
     const [userName, setUserName] = useState({ nome: "", sobrenome: "" }); // Estado para armazenar o nome do usuário
@@ -13,7 +13,7 @@ export default function User_Gerenciar_Task() {
     // UseEffect para buscar as informações do usuário logado
     useEffect(() => {
         const fetchUsername = async () => {
-            const userId = localStorage.getItem("id_usuario"); // Recupera o ID do usuário do localStorage
+            const userId = localStorage.getItem("id_usuario"); // Recupera o ID do usuário.
             if (userId) {
                 try {
                     const response = await axios.get(`http://localhost:3001/visualizar_user/${userId}`);

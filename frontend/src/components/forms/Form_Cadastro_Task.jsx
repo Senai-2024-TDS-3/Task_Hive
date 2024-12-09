@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'; // Hooks do React
+import { useState, useEffect } from 'react'; //  do React
 import axios from 'axios'; // Biblioteca para requisições HTTP
 
 export default function Form_Cadastro_Task() {
@@ -10,7 +10,7 @@ export default function Form_Cadastro_Task() {
     const [idUsuario, setIdUsuario] = useState(null); // ID do usuário logado
     const [userName, setUserName] = useState({ nome: "", sobrenome: "" }); // Nome do usuário logado
 
-    // Hook para buscar o nome do usuário logado ao carregar o componente
+    //buscar o nome do usuário logado ao carregar o componente
     useEffect(() => {
         const fetchUsername = async () => {
             const userId = localStorage.getItem("id_usuario"); // Obtém o ID do usuário do localStorage
@@ -27,7 +27,7 @@ export default function Form_Cadastro_Task() {
         fetchUsername();
     }, []); // Executa apenas ao montar o componente
 
-    // Hook para obter o ID do usuário logado do localStorage
+    //obter o ID do usuário logado do localStorage
     useEffect(() => {
         const usuarioId = localStorage.getItem("id_usuario");
         if (usuarioId) {

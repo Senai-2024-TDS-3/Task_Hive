@@ -12,11 +12,6 @@ app.use((req, res, next) => {
 });
 
 app.use(cors({ origin: "*" }));
-// app.use(cors({
-//     origin: "http://localhost:5173", // Permitir requisições da porta 5173
-//     methods: ["GET", "POST"],
-//     allowedHeaders: ["Content-Type"],
-//   }));
 
 const port = 3001;
 

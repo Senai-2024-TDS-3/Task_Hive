@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"; // Importa os hooks useEffect e useState do React
+import { useEffect, useState } from "react"; // Importa useEffect e useState do React
 import { Link } from "react-router-dom"; // Importa o componente Link para navegação entre páginas
 
 export default function Hex_Cell_User() {
@@ -6,7 +6,7 @@ export default function Hex_Cell_User() {
     const [usuario, setUsuario] = useState([]); // Inicializado como um array vazio
 
     useEffect(() => {
-        // Função assíncrona para buscar os usuários da API
+        // Função  para buscar os usuários da API
         const fetchUser = async () => {
             try {
                 // Faz uma requisição GET para o endpoint que retorna todos os usuários

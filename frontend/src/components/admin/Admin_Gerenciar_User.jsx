@@ -1,5 +1,5 @@
-import { useParams, useNavigate } from "react-router-dom"; // Hooks para capturar parâmetros da URL e realizar navegação
-import { useEffect, useState } from "react"; // Hooks para gerenciar estado e ciclo de vida do componente
+import { useParams, useNavigate } from "react-router-dom"; //capturar parâmetros da URL e realizar navegação
+import { useEffect, useState } from "react"; //gerenciar estado e ciclo de vida do componente
 import axios from "axios"; // Biblioteca para realizar requisições HTTP
 import Admin_Navbar from "./Admin_Navbar"; // Componente da barra de navegação para administradores
 

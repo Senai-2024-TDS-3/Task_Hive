@@ -1,4 +1,4 @@
-import { useState } from "react"; // Importa o hook useState para gerenciar o estado do formulário
+import { useState } from "react"; // Importando o useState para gerenciar o estado do formulário
 
 export default function Form_Cadastro_User({ onSubmit, onVoltarLogin }) {
     // Define o estado inicial do formulário

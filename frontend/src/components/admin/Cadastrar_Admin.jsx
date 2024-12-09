@@ -1,4 +1,4 @@
-import { useState } from "react"; // Hook para gerenciar estados no React
+import { useState } from "react"; //gerenciar estados no React
 import axios from "axios"; // Biblioteca para realizar requisições HTTP
 
 export default function Cadastrar_Admin() {
