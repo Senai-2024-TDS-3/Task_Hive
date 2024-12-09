@@ -6,40 +6,41 @@ import Form_Cadastro_User from "../forms/Form_Cadastro_User";
 import Form_Esqueci_Senha from "../forms/Form_Esqueci_Senha";
 
 export default function Hive_Card_Login() {
-    const [email, setEmail] = useState("");
-    const [senha, setSenha] = useState("");
-    const [error, setError] = useState("");
-    const [exibirCadastro, setExibirCadastro] = useState(false);
-    const [mostrarModal, setMostrarModal] = useState(false);
-    const [emailModal, setEmailModal] = useState("");
-    const [mostrarLogin, setMostrarLogin] = useState(true);
+    // Estados do componente
+    const [email, setEmail] = useState(""); // Armazena o email do usuário para login
+    const [senha, setSenha] = useState(""); // Armazena a senha do usuário para login
+    const [error, setError] = useState(""); // Armazena mensagens de erro de login
+    const [exibirCadastro, setExibirCadastro] = useState(false); // Controla a exibição do formulário de cadastro
+    const [mostrarModal, setMostrarModal] = useState(false); // Controla a exibição do modal "Esqueci Minha Senha"
+    const [emailModal, setEmailModal] = useState(""); // Armazena o email digitado no modal
+    const [mostrarLogin, setMostrarLogin] = useState(true); // Controla a exibição do formulário de login
 
-    const navigate = useNavigate();
+    const navigate = useNavigate(); // Hook para navegação entre rotas
 
-    // Const de login
+    // Função para realizar o login
     const handleLogin = async (e) => {
-        e.preventDefault();
+        e.preventDefault(); // Evita o reload da página ao enviar o formulário
         try {
             const response = await axios.post("http://localhost:3001/login", { email, senha });
             const { redirect, id_usuario } = response.data;
-    
-            // Salvar o ID do usuário no localStorage
+
+            // Armazena o ID do usuário no localStorage para manter a sessão
             localStorage.setItem("id_usuario", id_usuario);
-    
+
+            // Redireciona o usuário conforme seu papel (Admin ou Usuário)
             if (redirect === "Admin_Start") navigate("/admin_start");
             else navigate("/user_start");
         } catch (err) {
-            setError("Erro ao fazer login. Tente novamente.");
+            setError("Erro ao fazer login. Tente novamente."); // Exibe mensagem de erro em caso de falha
         }
-        console.log("Senha enviada para login:", senha);
     };
 
-    // Const para exibir o card/form de cadastro de usuário
+    // Função para processar o cadastro de usuário
     const handleCadastroSubmit = async (formData) => {
         try {
             const response = await axios.post("http://localhost:3001/cadastrar_user", formData);
-            alert(response.data.message);
-            setExibirCadastro(false);
+            alert(response.data.message); // Exibe mensagem de sucesso ou erro retornada pelo backend
+            setExibirCadastro(false); // Volta para o formulário de login
         } catch (error) {
             console.error(error);
             const errorMessage =
@@ -50,30 +51,31 @@ export default function Hive_Card_Login() {
 
     // Função para voltar ao login
     const handleVoltarLogin = () => {
-        setMostrarLogin(true); // Mostra o card de login novamente
-        setExibirCadastro(false); // Garante que o formulário de cadastro seja escondido
-        setMostrarModal(false); // Fecha o modal de "Esqueci minha senha", caso esteja aberto
+        setMostrarLogin(true); // Mostra o card de login
+        setExibirCadastro(false); // Esconde o formulário de cadastro
+        setMostrarModal(false); // Fecha o modal de "Esqueci Minha Senha"
     };
-    
 
+    // Função para enviar o email de redefinição de senha
     const handleEsqueciSenha = async () => {
         try {
             await axios.post("http://localhost:3001/esqueci-minha-senha", { email: emailModal });
             alert("Email de redefinição enviado com sucesso!");
-            setMostrarModal(false);
+            setMostrarModal(false); // Fecha o modal após o envio do email
         } catch (err) {
             alert("Erro ao enviar email. Verifique o endereço e tente novamente.");
         }
     };
 
     return (
-        // Form de login
+        // Estrutura principal do componente
         <div className="hex-grid">
-            {/* Exibir o card de login apenas quando 'mostrarLogin' for true */}
+            {/* Exibe o card de login se 'mostrarLogin' for true e o cadastro não estiver visível */}
             {mostrarLogin && !exibirCadastro && (
                 <div className="hex">
                     <label className="login_label">Email:</label>
-                    <input className="login_input"
+                    <input
+                        className="login_input"
                         type="text"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
@@ -81,7 +83,8 @@ export default function Hive_Card_Login() {
                     />
                     <br />
                     <label className="login_label senha">Senha:</label>
-                    <input className="login_input"
+                    <input
+                        className="login_input"
                         type="password"
                         value={senha}
                         onChange={(e) => setSenha(e.target.value)}
@@ -91,9 +94,11 @@ export default function Hive_Card_Login() {
                     <button className="login_button" type="submit" onClick={handleLogin}>
                         Entrar
                     </button>
+                    {/* Exibe erros de login, se houver */}
                     {error && <p style={{ color: "red" }}>{error}</p>}
                     <br />
                     <div className="hex_links">
+                        {/* Links para as ações de recuperação de senha e cadastro */}
                         <p onClick={() => { setMostrarModal(true); setMostrarLogin(false); }}>
                             Esqueci minha senha
                         </p>
@@ -102,17 +107,21 @@ export default function Hive_Card_Login() {
                 </div>
             )}
 
+            {/* Exibe o formulário de cadastro de usuário */}
             {exibirCadastro && (
-                <Form_Cadastro_User onSubmit={handleCadastroSubmit} onVoltarLogin={handleVoltarLogin} />
+                <Form_Cadastro_User
+                    onSubmit={handleCadastroSubmit} // Função para processar o cadastro
+                    onVoltarLogin={handleVoltarLogin} // Função para voltar ao login
+                />
             )}
 
-            {/* Modal de Esqueci Minha Senha */}
+            {/* Modal de recuperação de senha */}
             <Form_Esqueci_Senha
-                isOpen={mostrarModal}
-                onClose={handleVoltarLogin} // A função 'handleVoltarLogin' fecha o modal e mostra o login novamente
-                onSubmit={handleEsqueciSenha}
-                email={emailModal}
-                setEmail={setEmailModal}
+                isOpen={mostrarModal} // Exibição condicional do modal
+                onClose={handleVoltarLogin} // Fecha o modal e retorna ao login
+                onSubmit={handleEsqueciSenha} // Envia o email de recuperação
+                email={emailModal} // Estado para armazenar o email do modal
+                setEmail={setEmailModal} // Função para atualizar o estado do email
             />
         </div>
     );

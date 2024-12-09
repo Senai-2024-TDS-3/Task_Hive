@@ -1,62 +1,66 @@
-import { useState, useEffect } from "react";
-import { useParams } from "react-router-dom"; // Importando o useParams
-import axios from "axios";
-import CryptoJS from "crypto-js";
-import User_Navbar from "./User_Navbar";
+import { useState, useEffect } from "react"; // Importando hooks para gerenciar estado e efeitos colaterais
+import { useParams } from "react-router-dom"; // Importando o hook useParams para capturar o parâmetro da URL
+import axios from "axios"; // Biblioteca para fazer requisições HTTP
+import CryptoJS from "crypto-js"; // Biblioteca para criptografar a senha
+import User_Navbar from "./User_Navbar"; // Componente de navegação para o usuário
 
 export default function User_Gerenciar_User() {
-    const { id } = useParams(); // Pega o parâmetro 'id' da URL
-    const [nome, setNome] = useState("");
-    const [sobrenome, setSobrenome] = useState("");
-    const [email, setEmail] = useState("");
-    const [organizacao, setOrganizacao] = useState("");
-    const [senha, setSenha] = useState("");
+    const { id } = useParams(); // Captura o parâmetro 'id' da URL
+    const [nome, setNome] = useState(""); // Estado para armazenar o nome do usuário
+    const [sobrenome, setSobrenome] = useState(""); // Estado para armazenar o sobrenome do usuário
+    const [email, setEmail] = useState(""); // Estado para armazenar o email do usuário
+    const [organizacao, setOrganizacao] = useState(""); // Estado para armazenar a organização do usuário
+    const [senha, setSenha] = useState(""); // Estado para armazenar a senha do usuário
 
-    // Obter dados do usuário com base no ID
+    // Hook useEffect para carregar os dados do usuário sempre que o ID mudar
     useEffect(() => {
         if (id) {
-            carregarDadosUsuario(id);
+            carregarDadosUsuario(id); // Chama a função para carregar os dados do usuário
         }
-    }, [id]);
+    }, [id]); // Este efeito é acionado sempre que o 'id' mudar
 
+    // Função assíncrona para carregar os dados do usuário a partir da API
     const carregarDadosUsuario = async (userId) => {
         try {
             const response = await axios.get(`http://localhost:3001/visualizar_user/${userId}`);
             const { nome, sobrenome, email, organizacao } = response.data;
+            // Atualiza os estados com os dados recebidos da API
             setNome(nome);
             setSobrenome(sobrenome);
             setEmail(email);
             setOrganizacao(organizacao);
         } catch (err) {
-            alert("Erro ao carregar dados do usuário.");
+            alert("Erro ao carregar dados do usuário."); // Exibe um alerta caso ocorra erro
         }
     };
 
+    // Função para atualizar os dados do usuário
     const handleUpdateUser = async (e) => {
-        e.preventDefault();
-        const dadosAtualizados = {};
-    
-        // Adicionar somente os campos que não estão em branco
+        e.preventDefault(); // Previne o comportamento padrão do formulário
+        const dadosAtualizados = {}; // Objeto para armazenar os dados atualizados
+
+        // Adiciona os campos ao objeto somente se não estiverem vazios
         if (nome.trim() !== "") dadosAtualizados.nome = nome;
         if (sobrenome.trim() !== "") dadosAtualizados.sobrenome = sobrenome;
         if (email.trim() !== "") dadosAtualizados.email = email;
         if (organizacao.trim() !== "") dadosAtualizados.organizacao = organizacao;
         if (senha.trim() !== "") {
+            // Criptografa a senha antes de enviá-la para o backend
             dadosAtualizados.senha = CryptoJS.AES.encrypt(senha, "chaveSecreta").toString();
         }
-    
+
         try {
+            // Envia uma requisição PUT para atualizar os dados do usuário
             await axios.put(`http://localhost:3001/atualizar_user/${id}`, dadosAtualizados);
-            alert("Dados atualizados com sucesso!");
+            alert("Dados atualizados com sucesso!"); // Exibe um alerta de sucesso
         } catch (err) {
-            alert("Erro ao atualizar dados. Os campos não podem ser vazios.");
+            alert("Erro ao atualizar dados. Os campos não podem ser vazios."); // Exibe um alerta caso ocorra erro
         }
     };
-    
 
     return (
         <>
-            <User_Navbar />
+            <User_Navbar /> {/* Componente de navegação do usuário */}
             <div className="flex justify-center items-center mt-32 h-full">
                 <div className="bg-[#F0A500] p-6 shadow-md w-96 rounded-none">
                     <form onSubmit={handleUpdateUser}>

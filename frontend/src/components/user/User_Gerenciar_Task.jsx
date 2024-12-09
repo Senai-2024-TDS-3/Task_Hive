@@ -1,96 +1,99 @@
-import { useParams, useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
-import axios from "axios";
-import User_Navbar from "./User_Navbar";
+import { useParams, useNavigate } from "react-router-dom"; // Hooks para manipular a URL e navegação
+import { useEffect, useState } from "react"; // Hooks para efeitos colaterais e gerenciamento de estado
+import axios from "axios"; // Biblioteca para fazer requisições HTTP
+import User_Navbar from "./User_Navbar"; // Componente de Navbar para o usuário
 
 export default function User_Gerenciar_Task() {
-    const { id } = useParams(); // Captura o ID da tarefa da URL
-    const navigate = useNavigate();
-    const [tarefa, setTarefa] = useState({});
-    const [status, setStatus] = useState("");
-    const [userName, setUserName] = useState ({ nome: "", sobrenome: ""});
+    const { id } = useParams(); // Captura o ID da tarefa a partir da URL
+    const navigate = useNavigate(); // Hook de navegação para redirecionamento após ações
+    const [tarefa, setTarefa] = useState({}); // Estado para armazenar as informações da tarefa
+    const [status, setStatus] = useState(""); // Estado para armazenar o status da tarefa
+    const [userName, setUserName] = useState({ nome: "", sobrenome: "" }); // Estado para armazenar o nome do usuário
 
+    // UseEffect para buscar as informações do usuário logado
     useEffect(() => {
         const fetchUsername = async () => {
-            const userId = localStorage.getItem("id_usuario");
+            const userId = localStorage.getItem("id_usuario"); // Recupera o ID do usuário do localStorage
             if (userId) {
                 try {
                     const response = await axios.get(`http://localhost:3001/visualizar_user/${userId}`);
-                    setUserName(response.data);
+                    setUserName(response.data); // Atualiza o estado com o nome do usuário
                 } catch (error) {
                     console.error("Erro ao buscar informações do usuário:", error);
                 }
             }
         };
         fetchUsername();
-    }, []);
+    }, []); // Este efeito roda apenas uma vez após o componente ser montado
 
-
+    // UseEffect para buscar a tarefa específica do usuário
     useEffect(() => {
-        const usuarioId = localStorage.getItem("id_usuario");
-    
+        const usuarioId = localStorage.getItem("id_usuario"); // Recupera o ID do usuário logado
+
+        // Requisição para buscar os detalhes da tarefa
         axios
             .get(`http://localhost:3001/visualizar_user/${usuarioId}/tasks/${id}`)
             .then((res) => {
                 const data = res.data;
-    
-                // Formatar o prazo retornado do backend
+
+                // Formatar o prazo da tarefa (caso exista)
                 if (data.prazo) {
-                    data.prazo = data.prazo.split("T")[0]; // Converter para 'YYYY-MM-DD'
-    
-                    // Verifica se o prazo já expirou
+                    data.prazo = data.prazo.split("T")[0]; // Converter para formato 'YYYY-MM-DD'
+
+                    // Verificar se o prazo da tarefa já expirou
                     const hoje = new Date();
                     const prazo = new Date(data.prazo);
-    
                     if (prazo < hoje) {
                         alert("O prazo desta tarefa expirou.");
                     }
                 }
-    
-                setTarefa(data); // Define a tarefa no estado
-                setStatus(data.status); // Define o status no estado
+
+                setTarefa(data); // Atualiza as informações da tarefa
+                setStatus(data.status); // Atualiza o estado do status da tarefa
             })
             .catch((err) => console.error("Erro ao buscar tarefa:", err));
-    }, [id]);
-    
-    
+    }, [id]); // Este efeito é acionado toda vez que o ID da tarefa mudar
 
+    // Função para atualizar a tarefa
     const handleUpdate = (e) => {
-        e.preventDefault();
+        e.preventDefault(); // Evita o recarregamento da página ao enviar o formulário
         const usuarioId = localStorage.getItem("id_usuario");
-    
-        // Formatar prazo para 'YYYY-MM-DD'
+
+        // Formatar o prazo da tarefa para o formato correto
         const formattedPrazo = tarefa.prazo ? tarefa.prazo.split('T')[0] : null;
-    
+
+        // Requisição para atualizar a tarefa
         axios.put(`http://localhost:3001/update_user/${usuarioId}/tasks/${id}`, {
             titulo: tarefa.titulo,
             descricao: tarefa.descricao,
             status: status,
-            prazo: formattedPrazo, // Enviar a data formatada
+            prazo: formattedPrazo, // Envia o prazo formatado
         })
             .then(() => alert("Tarefa atualizada com sucesso!"))
             .catch((err) => console.error("Erro ao atualizar tarefa:", err));
     };
-    
+
+    // Função para deletar a tarefa
     const handleDelete = () => {
         const usuarioId = localStorage.getItem("id_usuario");
-    
+
+        // Confirmação antes de deletar
         if (window.confirm("Tem certeza que deseja deletar esta tarefa?")) {
             axios.delete(`http://localhost:3001/delete_user/${usuarioId}/tasks/${id}`)
                 .then(() => {
                     alert("Tarefa deletada com sucesso!");
-                    navigate("/user_start"); // Redireciona para o painel do usuário
+                    navigate("/user_start"); // Redireciona o usuário para o painel principal
                 })
                 .catch((err) => console.error("Erro ao deletar tarefa:", err));
         }
     };
-    
+
     return (
         <>
-            <User_Navbar />
+            <User_Navbar /> {/* Exibe a Navbar do usuário */}
             <div className="form-container-gerenciar">
                 <form onSubmit={handleUpdate} className="form-gerenciar">
-                    <p>{userName.nome} {userName.sobrenome}</p>
+                    <p>{userName.nome} {userName.sobrenome}</p> {/* Exibe o nome completo do usuário */}
                     <div className="form-row-gerenciar">
                         <label>
                             Nome da Tarefa:
@@ -123,7 +126,9 @@ export default function User_Gerenciar_Task() {
                     <div className="form-row-gerenciar">
                         <label>
                             Descrição:
-                            <textarea rows={5} cols={50}
+                            <textarea
+                                rows={5}
+                                cols={50}
                                 value={tarefa.descricao || ""}
                                 onChange={(e) => setTarefa({ ...tarefa, descricao: e.target.value })}
                             />

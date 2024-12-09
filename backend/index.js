@@ -33,7 +33,7 @@ const transporter = nodemailer.createTransport({
     },
 });
 
-// POST ESQUECI MINHA SENHA
+// ROTA DO ESQUECI MINHA SENHA (POST)
 app.post("/esqueci-minha-senha", (req, res) => {
     const { email } = req.body;
 
@@ -72,7 +72,7 @@ app.post("/esqueci-minha-senha", (req, res) => {
     });
 });
 
-// POST REDEFINIR SENHA
+// ROTA PARA REDEFINIR SENHA (POST)
 app.post("/redefinir-senha", (req, res) => {
     const { token, senha } = req.body;
 
@@ -110,7 +110,7 @@ app.post("/redefinir-senha", (req, res) => {
     }
 });
 
-// GET VALIDAR TOKEN
+// ROTA PARA VALIDAR O TOKEN DE REDEFINIR SENHA (GET)
 app.get("/validar-token", (req, res) => {
     const { token } = req.query;
 
@@ -129,7 +129,7 @@ app.get("/validar-token", (req, res) => {
     }
 });
 
-// POST LOGIN
+// ROTA PARA REALIZAR LOGIN (POST)
 app.post("/login", (req, res) => {
     const { email, senha } = req.body;
 
@@ -165,7 +165,7 @@ app.post("/login", (req, res) => {
 });
 
 
-// POST USER
+// ROTA PARA CADASTRAR USUÁRIO (POST)
 app.post("/cadastrar_user",(req, res) => {
     const { nome, sobrenome, email, senha, organizacao } = req.body;
 
@@ -184,7 +184,7 @@ app.post("/cadastrar_user",(req, res) => {
     }
 });
 
-// POST ADMIN
+// ROTA PARA CADASTRAR ADMIN (POST)
 app.post('/cadastrar_admin',(req, res) => {
     const { nome, sobrenome, email, senha, organizacao } = req.body;
     try {
@@ -212,7 +212,7 @@ app.post('/cadastrar_admin',(req, res) => {
     }
 });
 
-// POST TASK
+// ROTA PARA CADASTRAR TAREFA (POST)
 app.post('/cadastrar_task', (req, res) => {
     const { titulo, descricao, status, prazo, id_usuario } = req.body;
 
@@ -232,7 +232,7 @@ app.post('/cadastrar_task', (req, res) => {
     );
 });
 
-// GET ALL ADMINS
+// ROTA PARA VISUALIZAR TODOS OS ADMINS (GET)
 app.get('/visualizar_admins', async (req, res) => {
     try {
         // Realiza a consulta assíncrona
@@ -251,7 +251,7 @@ app.get('/visualizar_admins', async (req, res) => {
     }
 });
 
-// DELETE ADMIN
+// ROTA PARA DELETAR ADMIN (DELETE)
 app.delete('/deletar_admin/:id',(req, res) => {
     const { id } = req.params;
     try {
@@ -273,8 +273,7 @@ function formatDate(date) {
 }
 
 // No momento de retornar as tarefas, use o formatDate para formatar o prazo
-// GET TAREFAS
-// GET ALL TASKS
+// ROTA PARA VISUALIZAR TODAS AS TAREFAS CADASTRADAS NO SISTEMA (GET)
 app.get('/visualizar_all_tasks', async (req, res) => {
     try {
 const query = `
@@ -299,7 +298,7 @@ const query = `
     }
 });
 
-// GET TASK BY ID
+// ROTA PARA VISUALIZAR TODAS AS TAREFAS ATRAVÉS DE ID (GET)
 app.get('/visualizar_all_tasks/:id', async(req, res) => {
     const { id } = req.params;
 
@@ -321,7 +320,7 @@ app.get('/visualizar_all_tasks/:id', async(req, res) => {
     }
 });
 
-// PUT TASK
+// ROTA PARA ATUALIZAR TAREFA (PUT)
 app.put('/update_task/:id',(req, res) => {
     const { id } = req.params;
     const { titulo, descricao, status, prazo } = req.body;
@@ -349,7 +348,7 @@ app.put('/update_task/:id',(req, res) => {
 });
 
 
-// GET USER
+// ROTA PARA VISUALIZAR TODOS OS USUÁRIOS CADASTRADOS NO SISTEMA (GET)
 app.get('/visualizar_user/', async (req, res) => {
     
     try {
@@ -379,7 +378,7 @@ function formatDate(date) {
     return `${day}/${month}/${year}`;
 }
 
-// GET USER TASKS
+// ROTA PARA VISUALIZAR TODAS AS TAREFAS DE UM USUÁRIO ESPECÍFICO (GET)
 app.get('/visualizar_user/:id/tasks', async (req, res) => {
     const { id } = req.params;
 
@@ -407,7 +406,7 @@ app.get('/visualizar_user/:id/tasks', async (req, res) => {
 });
 
 
-// GET TASK BY ID
+// ROTA PARA VISUALIZAR TAREFA ATRAVÉS DO ID DO USUÁRIO (GET)
 app.get('/visualizar_user/:id/tasks/:idTask', async (req, res) => {
     const { id, idTask } = req.params;
 
@@ -432,7 +431,7 @@ app.get('/visualizar_user/:id/tasks/:idTask', async (req, res) => {
 
 
 
-// PUT USER TASK
+// ROTA PARA ATUALIZAR TAREFA DE UM USUÁRIO (PUT)
 app.put('/update_user/:id/tasks/:idTask', async (req, res) => {
     const { id, idTask } = req.params;
     const { titulo, descricao, status, prazo } = req.body;
@@ -454,7 +453,7 @@ app.put('/update_user/:id/tasks/:idTask', async (req, res) => {
     }
 });
 
-// DELETE USER TASK
+// ROTA PARA DELETAR TAREFA DE UM USUÁRIO (DELETE)
 app.delete('/delete_user/:id/tasks/:idTask',(req, res) => {
     const { id, idTask } = req.params;
     try {
@@ -473,7 +472,7 @@ app.delete('/delete_user/:id/tasks/:idTask',(req, res) => {
     }
 });
 
-// PUT: Atualizar usuário
+// ROTA PARA ATUALIZAR DADOS DE UM USUÁRIO (PUT)
 app.put("/atualizar_user/:id", (req, res) => {
     const { nome, sobrenome, email, organizacao, senha } = req.body;
     const { id } = req.params;
@@ -503,7 +502,7 @@ app.put("/atualizar_user/:id", (req, res) => {
 });
 
 
-// GET: Buscar dados de um usuário específico
+// ROTA PARA BUSCAR DADOS DE UM USUÁRIO ATRAVÉS DE SEU ID (GET)
 app.get('/visualizar_user/:id', async (req, res) => {
     const { id } = req.params;
     try {
@@ -524,7 +523,7 @@ app.get('/visualizar_user/:id', async (req, res) => {
 });
 
 
-// DELETE USER
+// ROTA PARA DELETAR UM USUÁRIO CADASTRADO NO SISTEMA (DELETE)
 app.delete('/deletar_user/:id', async (req, res) => {
     const { id } = req.params;
     try {
